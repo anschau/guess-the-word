@@ -1,17 +1,217 @@
 import { useState } from 'react'
-import {
-  Image,
-  Modal,
-  Pressable,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  View,
-  useWindowDimensions,
-} from 'react-native'
+import { Modal, ScrollView, StatusBar } from 'react-native'
+import type { PressableStateCallbackType } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { fonts } from '../../theme/typography'
+import styled from 'styled-components/native'
+import { useCompact } from '../../config/config'
+import { TextVariant, TextVariantStyles } from '../../config/TextStyles'
+
+const BackgroundContainer = styled.View({
+  flex: 1,
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+})
+
+const BackgroundImage = styled.Image({
+  flex: 1,
+  width: '100%',
+  height: '100%',
+  position: 'absolute',
+})
+
+const SafeArea = styled(SafeAreaView)({ flex: 1 })
+
+const Content = styled.View({
+  flexGrow: 1,
+  width: '100%',
+  maxWidth: 460,
+  justifyContent: 'space-between',
+  gap: 30,
+})
+
+const Header = styled.View({ alignItems: 'center', gap: 30 })
+
+const Logo = styled.Image({
+  resizeMode: 'contain',
+  width: '100%',
+  height: 'auto',
+  aspectRatio: 830 / 365,
+})
+
+const Menu = styled.View({
+  backgroundColor: '#e7d0ae',
+  borderWidth: 3,
+  borderColor: '#1e140b',
+  paddingHorizontal: 24,
+  paddingTop: 40,
+  paddingBottom: 16,
+  gap: 16,
+  marginHorizontal: 5,
+  boxShadow: '3px 6px 0px #28180e',
+})
+
+const PaperTop = styled.View.attrs({ pointerEvents: 'none' })({
+  position: 'absolute',
+  height: 7,
+  top: -7,
+  left: 18,
+  right: 18,
+  backgroundColor: '#e7d0ae',
+  borderTopWidth: 3,
+  borderColor: '#1e140b',
+})
+
+const PaperBottom = styled.View.attrs({ pointerEvents: 'none' })({
+  position: 'absolute',
+  height: 7,
+  bottom: -7,
+  left: 22,
+  right: 14,
+  backgroundColor: '#e7d0ae',
+  borderBottomWidth: 3,
+  borderColor: '#1e140b',
+})
+
+const AboutText = styled.Text({
+  ...TextVariantStyles[TextVariant.BUTTON],
+  fontSize: TextVariantStyles[TextVariant.H2].fontSize,
+})
+
+const Footer = styled.View({
+  backgroundColor: '#e7d0ae',
+  borderColor: '#1e140b',
+  borderWidth: 3,
+  paddingHorizontal: 14,
+  paddingVertical: 14,
+  marginHorizontal: 8,
+  marginBottom: 9,
+  boxShadow: '2px 5px 0px #28180e',
+})
+
+const ModalBackdrop = styled.View({
+  flex: 1,
+  backgroundColor: '#160d09cc',
+  justifyContent: 'center',
+  alignItems: 'center',
+  padding: 28,
+})
+
+const DialogPanel = styled.View({
+  width: '100%',
+  maxWidth: 420,
+  maxHeight: '85%',
+  backgroundColor: '#e7d0ae',
+  borderColor: '#20160c',
+  borderWidth: 4,
+  padding: 24,
+})
+
+const DialogTitle = styled.Text({
+  ...TextVariantStyles[TextVariant.H3],
+  textAlign: 'center',
+  marginBottom: 16,
+})
+
+const DialogText = styled.Text({
+  ...TextVariantStyles[TextVariant.BODY1],
+  textAlign: 'center',
+  marginBottom: 24,
+})
+
+const ScreenScroll = styled.ScrollView.attrs({
+  contentContainerStyle: { flexGrow: 1, alignItems: 'center', padding: 24 },
+})({})
+
+const Tagline = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
+  ...TextVariantStyles[$compact ? TextVariant.SUBTITLE1 : TextVariant.H4],
+  lineHeight: `${
+    TextVariantStyles[$compact ? TextVariant.SUBTITLE1 : TextVariant.H4]
+      .lineHeight
+  }px`,
+  color: '#f9e7c6',
+  textAlign: 'center',
+  letterSpacing: 1,
+  textShadow: '2px 3px 1px #2c170e',
+}))
+
+const FooterText = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
+  ...TextVariantStyles[$compact ? TextVariant.SUBTITLE2 : TextVariant.H5],
+  lineHeight: `${
+    TextVariantStyles[$compact ? TextVariant.SUBTITLE2 : TextVariant.H5]
+      .lineHeight
+  }px`,
+  textAlign: 'center',
+  letterSpacing: 0.5,
+}))
+
+const Rivet = styled.View.attrs({ pointerEvents: 'none' })<{
+  $side: 'left' | 'right'
+}>(({ $side }) => ({
+  ...{
+    position: 'absolute',
+    top: 7,
+    width: 20,
+    height: 22,
+    backgroundColor: '#737777',
+    borderColor: '#171711',
+    borderWidth: 3,
+    borderRadius: 7,
+    boxShadow: '1px 2px 0px #a89779',
+    borderTopColor: '#a0a3a1',
+  },
+  ...($side === 'left' ? { left: 9 } : { right: 9 }),
+}))
+
+const pressedStyle = ({ pressed }: PressableStateCallbackType) =>
+  pressed ? { transform: [{ translateY: 3 }], opacity: 0.85 } : undefined
+
+const ButtonOutline = styled.Pressable.attrs({ style: pressedStyle })({
+  borderWidth: 3,
+  borderColor: '#171309',
+  borderRadius: 6,
+  boxShadow: '0px 5px 0px #b29e81',
+  overflow: 'hidden',
+})
+
+const AboutButton = styled.Pressable.attrs({ style: pressedStyle })({
+  minHeight: 48,
+  alignItems: 'center',
+  justifyContent: 'center',
+})
+
+const ButtonFace = styled.View<{ $primary: boolean }>(({ $primary }) => ({
+  ...{
+    borderTopWidth: 2,
+    borderBottomWidth: 7,
+    paddingHorizontal: 4,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  ...($primary
+    ? {
+        backgroundColor: '#e3b550',
+        borderTopColor: '#f2cf7c',
+        borderBottomColor: '#b98c36',
+        minHeight: 76,
+      }
+    : {
+        backgroundColor: '#a7c6d0',
+        borderTopColor: '#c0d9df',
+        borderBottomColor: '#7c9da7',
+        minHeight: 54,
+      }),
+}))
+
+const ButtonLabel = styled.Text<{ $primary: boolean }>(({ $primary }) => ({
+  ...TextVariantStyles[TextVariant.BUTTON],
+  ...($primary
+    ? {
+        fontSize: TextVariantStyles[TextVariant.H1].fontSize,
+        color: '#412704',
+      }
+    : { color: '#213b45' }),
+}))
 
 type MainScreenProps = { onPlay?: () => void }
 type Dialog = 'play' | 'instructions' | 'about'
@@ -41,66 +241,44 @@ function MenuButton({
   onPress: () => void
 }) {
   return (
-    <Pressable
-      accessibilityRole="button"
-      onPress={onPress}
-      style={({ pressed }) => [styles.buttonOutline, pressed && styles.pressed]}
-    >
-      <View
-        style={[
-          styles.buttonFace,
-          primary ? styles.primaryFace : styles.secondaryFace,
-        ]}
-      >
-        <Text
-          style={[
-            styles.buttonText,
-            primary ? styles.playText : styles.instructionsText,
-          ]}
-        >
-          {label}
-        </Text>
-      </View>
-    </Pressable>
+    <ButtonOutline accessibilityRole="button" onPress={onPress}>
+      <ButtonFace $primary={primary}>
+        <ButtonLabel $primary={primary}>{label}</ButtonLabel>
+      </ButtonFace>
+    </ButtonOutline>
   )
 }
 
 export default function MainScreen({ onPlay }: MainScreenProps) {
   const [dialog, setDialog] = useState<Dialog | null>(null)
-  const { width } = useWindowDimensions()
-  const compact = width < 360
-	
+  const compact = useCompact()
 
   return (
     <>
-			<View style={styles.viewImageBackground}>
-				<Image source={require('../../../assets/images/wood-texture.png')} style={styles.imageBackground} resizeMode='repeat' />
-			</View>
+      <BackgroundContainer>
+        <BackgroundImage
+          source={require('../../../assets/images/wood-texture.png')}
+          resizeMode="repeat"
+        />
+      </BackgroundContainer>
       <StatusBar barStyle="light-content" />
-      <SafeAreaView style={styles.safeArea}>
-        <ScrollView contentContainerStyle={styles.scrollContent}>
-          <View style={styles.content}>
-            <View style={styles.header}>
-              <Image
+      <SafeArea>
+        <ScreenScroll>
+          <Content>
+            <Header>
+              <Logo
                 source={require('../../../assets/images/game-logo.png')}
                 accessibilityLabel="Guess the Word"
-                style={styles.logo}
               />
-              <Text style={[styles.tagline, compact && styles.compactTagline]}>
+              <Tagline $compact={compact}>
                 {'Aprenda inglês\njogando com amigos'}
-              </Text>
-            </View>
-            <View style={styles.menu}>
-              <View pointerEvents="none" style={styles.paperTop} />
-              <View pointerEvents="none" style={styles.paperBottom} />
-              <View
-                pointerEvents="none"
-                style={[styles.rivet, styles.rivetLeft]}
-              />
-              <View
-                pointerEvents="none"
-                style={[styles.rivet, styles.rivetRight]}
-              />
+              </Tagline>
+            </Header>
+            <Menu>
+              <PaperTop />
+              <PaperBottom />
+              <Rivet $side="left" />
+              <Rivet $side="right" />
               <MenuButton
                 label="Jogar"
                 primary
@@ -110,213 +288,41 @@ export default function MainScreen({ onPlay }: MainScreenProps) {
                 label="Instruções"
                 onPress={() => setDialog('instructions')}
               />
-              <Pressable
+              <AboutButton
                 accessibilityRole="button"
                 onPress={() => setDialog('about')}
-                style={({ pressed }) => [
-                  styles.aboutButton,
-                  pressed && styles.pressed,
-                ]}
               >
-                <Text style={styles.aboutText}>Sobre</Text>
-              </Pressable>
-            </View>
-            <View style={styles.footer}>
-              <View pointerEvents="none" style={styles.paperTop} />
-              <View pointerEvents="none" style={styles.paperBottom} />
-              <Text
-                style={[styles.footerText, compact && styles.compactFooter]}
-              >
+                <AboutText>Sobre</AboutText>
+              </AboutButton>
+            </Menu>
+            <Footer>
+              <PaperTop />
+              <PaperBottom />
+              <FooterText $compact={compact}>
                 {'Um celular, amigos\nreunidos e inglês\nna ponta da língua.'}
-              </Text>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+              </FooterText>
+            </Footer>
+          </Content>
+        </ScreenScroll>
+      </SafeArea>
       <Modal
         transparent
         visible={dialog !== null}
         animationType="fade"
         onRequestClose={() => setDialog(null)}
       >
-        <View style={styles.modalBackdrop}>
-          <View accessibilityViewIsModal style={styles.dialog}>
+        <ModalBackdrop>
+          <DialogPanel accessibilityViewIsModal>
             <ScrollView>
-              <Text accessibilityRole="header" style={styles.dialogTitle}>
+              <DialogTitle accessibilityRole="header">
                 {dialog && dialogs[dialog].title}
-              </Text>
-              <Text style={styles.dialogText}>
-                {dialog && dialogs[dialog].text}
-              </Text>
+              </DialogTitle>
+              <DialogText>{dialog && dialogs[dialog].text}</DialogText>
               <MenuButton label="Voltar" onPress={() => setDialog(null)} />
             </ScrollView>
-          </View>
-        </View>
+          </DialogPanel>
+        </ModalBackdrop>
       </Modal>
     </>
   )
 }
-
-const styles = StyleSheet.create({
-	viewImageBackground: { flex: 1, width: '100%', height: '100%', position: 'absolute' },
-	imageBackground: { flex: 1, width: '100%', height: '100%', position: 'absolute' },
-  background: { flex: 1, backgroundColor: '#442411' },
-  safeArea: { flex: 1 },
-  scrollContent: { flexGrow: 1, alignItems: 'center', padding: 24 },
-  content: {
-    flexGrow: 1,
-    width: '100%',
-    maxWidth: 460,
-    justifyContent: 'space-between',
-    gap: 30,
-  },
-  header: { alignItems: 'center', gap: 30 },
-  logo: {
-    resizeMode: 'contain',
-    width: '100%',
-    height: 'auto',
-    aspectRatio: 830 / 365,
-  },
-  tagline: {
-    fontFamily: fonts.text,
-    color: '#f9e7c6',
-    fontSize: 32,
-    lineHeight: 34,
-    textAlign: 'center',
-    letterSpacing: 1,
-    textShadowColor: '#2c170e',
-    textShadowOffset: { width: 2, height: 3 },
-    textShadowRadius: 1,
-  },
-  compactTagline: { fontSize: 27, lineHeight: 30 },
-  menu: {
-    backgroundColor: '#e7d0ae',
-    borderWidth: 3,
-    borderColor: '#1e140b',
-    paddingHorizontal: 24,
-    paddingTop: 40,
-    paddingBottom: 16,
-    gap: 16,
-    marginHorizontal: 5,
-    boxShadow: '3px 6px 0px #28180e',
-  },
-  paperTop: {
-    position: 'absolute',
-    height: 7,
-    top: -7,
-    left: 18,
-    right: 18,
-    backgroundColor: '#e7d0ae',
-    borderTopWidth: 3,
-    borderColor: '#1e140b',
-  },
-  paperBottom: {
-    position: 'absolute',
-    height: 7,
-    bottom: -7,
-    left: 22,
-    right: 14,
-    backgroundColor: '#e7d0ae',
-    borderBottomWidth: 3,
-    borderColor: '#1e140b',
-  },
-  rivet: {
-    position: 'absolute',
-    top: 7,
-    width: 20,
-    height: 22,
-    backgroundColor: '#737777',
-    borderColor: '#171711',
-    borderWidth: 3,
-    borderRadius: 7,
-    boxShadow: '1px 2px 0px #a89779',
-    borderTopColor: '#a0a3a1',
-  },
-  rivetLeft: { left: 9 },
-  rivetRight: { right: 9 },
-  buttonOutline: {
-    borderWidth: 3,
-    borderColor: '#171309',
-    borderRadius: 6,
-    boxShadow: '0px 5px 0px #b29e81',
-    overflow: 'hidden',
-  },
-  buttonFace: {
-    borderTopWidth: 2,
-    borderBottomWidth: 7,
-    paddingHorizontal: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  primaryFace: {
-    backgroundColor: '#e3b550',
-    borderTopColor: '#f2cf7c',
-    borderBottomColor: '#b98c36',
-    minHeight: 76,
-  },
-  secondaryFace: {
-    backgroundColor: '#a7c6d0',
-    borderTopColor: '#c0d9df',
-    borderBottomColor: '#7c9da7',
-    minHeight: 54,
-  },
-  buttonText: { fontFamily: fonts.title, textAlign: 'center' },
-  playText: { fontSize: 54, color: '#412704' },
-  instructionsText: { fontSize: 33, color: '#213b45' },
-  pressed: { transform: [{ translateY: 3 }], opacity: 0.85 },
-  aboutButton: {
-    minHeight: 48,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  aboutText: { fontFamily: fonts.title, fontSize: 38, color: '#382313' },
-  footer: {
-    backgroundColor: '#e7d0ae',
-    borderColor: '#1e140b',
-    borderWidth: 3,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
-    marginHorizontal: 8,
-    marginBottom: 9,
-    boxShadow: '2px 5px 0px #28180e',
-  },
-  footerText: {
-    fontFamily: fonts.text,
-    color: '#382313',
-    textAlign: 'center',
-    fontSize: 28,
-    lineHeight: 29,
-    letterSpacing: 0.5,
-  },
-  compactFooter: { fontSize: 25, lineHeight: 27 },
-  modalBackdrop: {
-    flex: 1,
-    backgroundColor: '#160d09cc',
-    justifyContent: 'center',
-    alignItems: 'center',
-    padding: 28,
-  },
-  dialog: {
-    width: '100%',
-    maxWidth: 420,
-    maxHeight: '85%',
-    backgroundColor: '#e7d0ae',
-    borderColor: '#20160c',
-    borderWidth: 4,
-    padding: 24,
-  },
-  dialogTitle: {
-    fontFamily: fonts.text,
-    fontSize: 36,
-    color: '#382313',
-    textAlign: 'center',
-    marginBottom: 16,
-  },
-  dialogText: {
-    fontFamily: fonts.text,
-    fontSize: 26,
-    color: '#382313',
-    textAlign: 'center',
-    marginBottom: 24,
-  },
-})
