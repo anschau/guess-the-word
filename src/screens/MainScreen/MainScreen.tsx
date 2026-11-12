@@ -4,7 +4,11 @@ import type { PressableStateCallbackType } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { useCompact } from '../../config/config'
-import { TextVariant, TextVariantStyles } from '../../config/TextStyles'
+import {
+  getTextVariantStyles,
+  TextVariant,
+  TextVariantStyles,
+} from '../../config/TextStyles'
 
 const BackgroundContainer = styled.View({
   flex: 1,
@@ -124,11 +128,7 @@ const ScreenScroll = styled.ScrollView.attrs({
 })({})
 
 const Tagline = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
-  ...TextVariantStyles[$compact ? TextVariant.SUBTITLE1 : TextVariant.H4],
-  lineHeight: `${
-    TextVariantStyles[$compact ? TextVariant.SUBTITLE1 : TextVariant.H4]
-      .lineHeight
-  }px`,
+  ...getTextVariantStyles(TextVariant.H4, $compact),
   color: '#f9e7c6',
   textAlign: 'center',
   letterSpacing: 1,
@@ -136,11 +136,7 @@ const Tagline = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
 }))
 
 const FooterText = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
-  ...TextVariantStyles[$compact ? TextVariant.SUBTITLE2 : TextVariant.H5],
-  lineHeight: `${
-    TextVariantStyles[$compact ? TextVariant.SUBTITLE2 : TextVariant.H5]
-      .lineHeight
-  }px`,
+  ...getTextVariantStyles(TextVariant.H5, $compact),
   textAlign: 'center',
   letterSpacing: 0.5,
 }))

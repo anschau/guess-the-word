@@ -48,3 +48,25 @@ export const TextVariantStyles = {
     textTransform: 'uppercase',
   },
 } satisfies { [id: string]: TextStyle }
+
+const compactOverrides: Partial<
+  Record<TextVariant, { fontSize: number; lineHeight: number }>
+> = {
+  [TextVariant.H4]: { fontSize: 27, lineHeight: 30 },
+  [TextVariant.H5]: { fontSize: 25, lineHeight: 27 },
+}
+
+// Resolves responsive typography and formats lineHeight for styled-components/native.
+export function getTextVariantStyles(variant: TextVariant, compact = false) {
+  const style = {
+    ...TextVariantStyles[variant],
+    ...(compact ? compactOverrides[variant] : undefined),
+  }
+
+  return {
+    ...style,
+    ...(style.lineHeight !== undefined
+      ? { lineHeight: `${style.lineHeight}px` }
+      : { lineHeight: undefined }),
+  }
+}
