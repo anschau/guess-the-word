@@ -32,6 +32,35 @@ cd ..
 npm run ios
 ```
 
+## Fontes
+
+- Textos: [Motion Control Bold](https://www.1001fonts.com/motion-control-font.html).
+- Títulos: [Ithaca](https://www.1001fonts.com/ithaca-font.html).
+
+Os arquivos estão em `assets/fonts`, registrados no iOS e copiados para
+`android/app/src/main/assets/fonts`. Recompile o app após instalar ou alterar fontes;
+o Fast Refresh não atualiza recursos nativos.
+
+Use os estilos de `src/theme/typography.ts` nas telas:
+
+```tsx
+import { Text } from 'react-native';
+import { typography } from './src/theme/typography';
+
+<Text style={typography.title}>Guess The Word</Text>;
+<Text style={typography.text}>Aprenda inglês jogando.</Text>;
+```
+
+Também é possível usar `fonts.text` e `fonts.title` em `fontFamily`.
+O peso Bold já faz parte do arquivo Motion Control; não é necessário adicionar
+`fontWeight`. A tela padrão `NewAppScreen` pertence a uma dependência e não usa
+esses estilos automaticamente.
+
+Os avisos originais estão em `assets/font-licenses` e são incluídos nos apps.
+O site e o README do autor indicam OFL para Motion Control, mas os metadados do
+arquivo ainda dizem “FontStruct Non-Commercial License”; essa divergência foi
+preservada, sem modificar a fonte.
+
 ## Verificações
 
 ```sh
