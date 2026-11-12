@@ -1,9 +1,9 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native'
 
 export const fonts = {
   text: 'MotionControl-Bold',
   title: 'Ithaca',
-} as const;
+} as const
 
 export const typography = StyleSheet.create({
   text: {
@@ -12,4 +12,4 @@ export const typography = StyleSheet.create({
   title: {
     fontFamily: fonts.title,
   },
-});
+})

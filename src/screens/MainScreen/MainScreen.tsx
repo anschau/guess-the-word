@@ -1,3 +1,3 @@
 export default function MainScreen() {
-  return null;
+  return null
 }
