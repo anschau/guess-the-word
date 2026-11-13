@@ -1,6 +1,6 @@
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
-import { Alert, StatusBar } from 'react-native'
+import { StatusBar } from 'react-native'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import type { MainStackParamList } from '../../navigation/MainStack'
@@ -29,16 +29,16 @@ import messages from './messages'
 
 type SwitchTurnScreenProps = StackScreenProps<MainStackParamList, 'SwitchTurn'>
 
-export default function SwitchTurnScreen({ route }: SwitchTurnScreenProps) {
+export default function SwitchTurnScreen({
+  route,
+  navigation,
+}: SwitchTurnScreenProps) {
   const intl = useIntl()
   const compact = useCompact()
   const { playerName, round, totalRounds } = route.params
 
   function handleConfirm() {
-    Alert.alert(
-      intl.formatMessage(messages.comingSoonTitle),
-      intl.formatMessage(messages.comingSoonText),
-    )
+    navigation.replace('GuessTheWord', route.params)
   }
 
   return (

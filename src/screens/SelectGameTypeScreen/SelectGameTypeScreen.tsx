@@ -7,6 +7,7 @@ import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import { usePlayersRepository } from '../../repositories/playersRepository'
 import { useGameTypeRepository } from '../../repositories/gameTypeRepository'
+import { useGameRepository } from '../../repositories/gameRepository'
 import { gameTypes } from '../../models/GameType'
 import { theme } from '../../theme/theme'
 import {
@@ -53,6 +54,21 @@ export default function SelectGameTypeScreen({
       return
     }
 
+    const startedAt = new Date().toISOString()
+    useGameRepository.getState().saveGame({
+      id: startedAt,
+      startedAt,
+      difficulty: selectedType.id,
+      totalRounds: rounds,
+      round: 1,
+      currentPlayerIndex: 0,
+      players: players.map((name, index) => ({
+        id: String(index),
+        name,
+        score: 0,
+      })),
+      usedWordIds: [],
+    })
     navigation.navigate('SwitchTurn', {
       playerName: players[0],
       round: 1,
