@@ -1,11 +1,13 @@
 import { useGameRepository } from '../repositories/gameRepository'
 import { usePlayersRepository } from '../repositories/playersRepository'
 import { useGameTypeRepository } from '../repositories/gameTypeRepository'
+import { useWordRepository } from '../repositories/wordRepository'
 
 const repositories = [
   usePlayersRepository,
   useGameTypeRepository,
   useGameRepository,
+  useWordRepository,
 ]
 
 export async function hydrateRepositories() {

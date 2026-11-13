@@ -83,6 +83,12 @@ se a leitura falhar, oferece uma nova tentativa sem sobrescrever os dados salvos
   `gameType` e atualizado com `setGameType`.
 - `useGameRepository`: progresso, maior pontuação individual por dificuldade e
   as últimas 20 partidas concluídas, da mais recente para a mais antiga.
+- `useWordRepository`: catálogo de palavras com três pistas por palavra,
+  persistido na chave `words` (versão 1). `saveWord` adiciona ou atualiza por ID,
+  `setWords` substitui a lista e `getWordsByGameType` filtra pela dificuldade.
+  Os dois exemplos ficam em `src/data/initialWords.ts` e são usados quando não
+  há catálogo salvo. Para ampliar um catálogo já salvo, use `saveWord`;
+  alterações nos exemplos não sobrescrevem os dados existentes.
 
 A tela de partida ainda não está implementada. Quando existir, deve chamar
 `saveGame` com o estado completo após cada mudança (rodada, pontos, jogador da
@@ -95,7 +101,7 @@ Jogadores e partidas usam versão 1. O repository de GameType usa versão 3 e
 mantém a chave `preferences` para migrar as strings salvas nas versões 1 e 2
 para objetos completos. Partidas e recordes continuam referenciando o ID.
 Alterações futuras no formato devem incluir uma
-migração no `persist`. Perguntas e respostas não fazem parte dessa persistência.
+migração no `persist`.
 Os dados são locais: não há sincronização ou backup em servidor.
 
 ## Verificações
