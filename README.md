@@ -49,10 +49,10 @@ Nos componentes com `styled-components/native`, use `getTextVariantStyles`:
 ```tsx
 import styled from 'styled-components/native'
 import { theme } from './src/theme/theme'
-import { getTextVariantStyles, TextVariant } from './src/theme/typography'
+import { getTextVariantStyles, TypographyVariant } from './src/theme/typography'
 
 const Title = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
-  ...getTextVariantStyles(TextVariant.H4, $compact),
+  ...getTextVariantStyles(TypographyVariant.H4, $compact),
   color: theme.colors.text,
 }))
 ```
@@ -60,7 +60,7 @@ const Title = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
 Passe o resultado de `useCompact`, de `src/config/config.ts`, para `$compact`.
 O segundo argumento de `getTextVariantStyles` é opcional e assume `false`.
 Esse helper adapta `lineHeight` para o formato usado por styled-components.
-Para a prop `style` de um `Text` nativo, use `TextVariantStyles[TextVariant.H4]`,
+Para a prop `style` de um `Text` nativo, use `TypographyVariantStyles[TypographyVariant.H4]`,
 que mantém os valores numéricos do React Native.
 
 O peso Bold já faz parte do arquivo Motion Control; não é necessário adicionar

@@ -6,7 +6,7 @@ export const fonts = {
   title: 'Ithaca',
 } as const
 
-export enum TextVariant {
+export enum TypographyVariant {
   H1 = 'h1',
   H2 = 'h2',
   H3 = 'h3',
@@ -27,25 +27,25 @@ const baseText = {
   color: theme.colors.text,
 } satisfies TextStyle
 
-export const TextVariantStyles = {
-  [TextVariant.H1]: { ...baseText, fontSize: 54 },
-  [TextVariant.H2]: { ...baseText, fontSize: 38 },
-  [TextVariant.H3]: { ...baseText, fontSize: 36 },
-  [TextVariant.H4]: { ...baseText, fontSize: 32, lineHeight: 34 },
-  [TextVariant.H5]: { ...baseText, fontSize: 28, lineHeight: 29 },
-  [TextVariant.H6]: { ...baseText, fontSize: 26 },
-  [TextVariant.SUBTITLE1]: { ...baseText, fontSize: 27, lineHeight: 30 },
-  [TextVariant.SUBTITLE2]: { ...baseText, fontSize: 25, lineHeight: 27 },
-  [TextVariant.BODY1]: { ...baseText, fontSize: 26 },
-  [TextVariant.BODY2]: { ...baseText, fontSize: 22 },
-  [TextVariant.BUTTON]: {
+export const TypographyVariantStyles = {
+  [TypographyVariant.H1]: { ...baseText, fontSize: 54 },
+  [TypographyVariant.H2]: { ...baseText, fontSize: 38 },
+  [TypographyVariant.H3]: { ...baseText, fontSize: 36 },
+  [TypographyVariant.H4]: { ...baseText, fontSize: 32, lineHeight: 34 },
+  [TypographyVariant.H5]: { ...baseText, fontSize: 28, lineHeight: 29 },
+  [TypographyVariant.H6]: { ...baseText, fontSize: 26 },
+  [TypographyVariant.SUBTITLE1]: { ...baseText, fontSize: 27, lineHeight: 30 },
+  [TypographyVariant.SUBTITLE2]: { ...baseText, fontSize: 25, lineHeight: 27 },
+  [TypographyVariant.BODY1]: { ...baseText, fontSize: 26 },
+  [TypographyVariant.BODY2]: { ...baseText, fontSize: 22 },
+  [TypographyVariant.BUTTON]: {
     ...baseText,
     fontFamily: fonts.title,
     fontSize: 33,
     textAlign: 'center',
   },
-  [TextVariant.CAPTION]: { ...baseText, fontSize: 18, lineHeight: 22 },
-  [TextVariant.OVERLINE]: {
+  [TypographyVariant.CAPTION]: { ...baseText, fontSize: 18, lineHeight: 22 },
+  [TypographyVariant.OVERLINE]: {
     ...baseText,
     fontSize: 16,
     lineHeight: 20,
@@ -55,16 +55,16 @@ export const TextVariantStyles = {
 } satisfies { [id: string]: TextStyle }
 
 const compactOverrides: Partial<
-  Record<TextVariant, { fontSize: number; lineHeight: number }>
+  Record<TypographyVariant, { fontSize: number; lineHeight: number }>
 > = {
-  [TextVariant.H4]: { fontSize: 27, lineHeight: 30 },
-  [TextVariant.H5]: { fontSize: 25, lineHeight: 27 },
+  [TypographyVariant.H4]: { fontSize: 27, lineHeight: 30 },
+  [TypographyVariant.H5]: { fontSize: 25, lineHeight: 27 },
 }
 
 // Resolves responsive typography and formats lineHeight for styled-components/native.
-export function getTextVariantStyles(variant: TextVariant, compact = false) {
+export function getTextVariantStyles(variant: TypographyVariant, compact = false) {
   const style = {
-    ...TextVariantStyles[variant],
+    ...TypographyVariantStyles[variant],
     ...(compact ? compactOverrides[variant] : undefined),
   }
 

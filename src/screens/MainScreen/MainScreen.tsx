@@ -9,8 +9,8 @@ import { theme } from '../../theme/theme'
 import messages from './messages'
 import {
   getTextVariantStyles,
-  TextVariant,
-  TextVariantStyles,
+  TypographyVariant,
+  TypographyVariantStyles,
 } from '../../theme/typography'
 
 const BackgroundContainer = styled.View({
@@ -81,8 +81,8 @@ const PaperBottom = styled.View.attrs({ pointerEvents: 'none' })({
 })
 
 const AboutText = styled.Text({
-  ...TextVariantStyles[TextVariant.BUTTON],
-  fontSize: TextVariantStyles[TextVariant.H2].fontSize,
+  ...TypographyVariantStyles[TypographyVariant.BUTTON],
+  fontSize: TypographyVariantStyles[TypographyVariant.H2].fontSize,
 })
 
 const Footer = styled.View({
@@ -115,13 +115,13 @@ const DialogPanel = styled.View({
 })
 
 const DialogTitle = styled.Text({
-  ...TextVariantStyles[TextVariant.H3],
+  ...TypographyVariantStyles[TypographyVariant.H3],
   textAlign: 'center',
   marginBottom: 16,
 })
 
 const DialogText = styled.Text({
-  ...TextVariantStyles[TextVariant.BODY1],
+  ...TypographyVariantStyles[TypographyVariant.BODY1],
   textAlign: 'center',
   marginBottom: 24,
 })
@@ -131,7 +131,7 @@ const ScreenScroll = styled.ScrollView.attrs({
 })({})
 
 const Tagline = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
-  ...getTextVariantStyles(TextVariant.H4, $compact),
+  ...getTextVariantStyles(TypographyVariant.H4, $compact),
   color: '#f9e7c6',
   textAlign: 'center',
   letterSpacing: 1,
@@ -139,7 +139,7 @@ const Tagline = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
 }))
 
 const FooterText = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
-  ...getTextVariantStyles(TextVariant.H5, $compact),
+  ...getTextVariantStyles(TypographyVariant.H5, $compact),
   textAlign: 'center',
   letterSpacing: 0.5,
 }))
@@ -203,10 +203,10 @@ const ButtonFace = styled.View<{ $primary: boolean }>(({ $primary }) => ({
 }))
 
 const ButtonLabel = styled.Text<{ $primary: boolean }>(({ $primary }) => ({
-  ...TextVariantStyles[TextVariant.BUTTON],
+  ...TypographyVariantStyles[TypographyVariant.BUTTON],
   ...($primary
     ? {
-        fontSize: TextVariantStyles[TextVariant.H1].fontSize,
+        fontSize: TypographyVariantStyles[TypographyVariant.H1].fontSize,
         color: '#412704',
       }
     : { color: '#213b45' }),
