@@ -1,4 +1,5 @@
 import React from 'react'
+import { IntlProvider } from 'react-intl'
 import ReactTestRenderer from 'react-test-renderer'
 import { StyleSheet, Text } from 'react-native'
 import MainScreen from '../src/screens/MainScreen/MainScreen'
@@ -15,7 +16,11 @@ test.each([false, true])(
     jest.mocked(useCompact).mockReturnValue(compact)
     let renderer!: ReactTestRenderer.ReactTestRenderer
     await ReactTestRenderer.act(() => {
-      renderer = ReactTestRenderer.create(<MainScreen />)
+      renderer = ReactTestRenderer.create(
+        <IntlProvider locale="pt-BR" defaultLocale="pt-BR">
+          <MainScreen />
+        </IntlProvider>,
+      )
     })
 
     const textStyle = (label: string) => {

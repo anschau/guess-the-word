@@ -1,9 +1,11 @@
 import { useState } from 'react'
+import { useIntl } from 'react-intl'
 import { Modal, ScrollView, StatusBar } from 'react-native'
 import type { PressableStateCallbackType } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { useCompact } from '../../config/config'
+import messages from './messages'
 import {
   getTextVariantStyles,
   TextVariant,
@@ -214,16 +216,16 @@ type Dialog = 'play' | 'instructions' | 'about'
 
 const dialogs = {
   play: {
-    title: 'Vamos jogar?',
-    text: 'A partida ainda está em preparação. Em breve, você poderá reunir os amigos e começar a jogar por aqui!',
+    title: messages.playTitle,
+    text: messages.playText,
   },
   instructions: {
-    title: 'Instruções',
-    text: 'Um celular, amigos reunidos e inglês na ponta da língua! A proposta é aprender inglês tentando adivinhar palavras juntos. As regras da partida estarão disponíveis em breve.',
+    title: messages.instructions,
+    text: messages.instructionsText,
   },
   about: {
-    title: 'Sobre o jogo',
-    text: 'Guess the Word é um jogo para aprender inglês com amigos. Transforme o tempo juntos em uma oportunidade de descobrir novas palavras!',
+    title: messages.aboutTitle,
+    text: messages.aboutText,
   },
 }
 
@@ -246,6 +248,7 @@ function MenuButton({
 }
 
 export default function MainScreen({ onPlay }: MainScreenProps) {
+  const intl = useIntl()
   const [dialog, setDialog] = useState<Dialog | null>(null)
   const compact = useCompact()
 
@@ -264,10 +267,10 @@ export default function MainScreen({ onPlay }: MainScreenProps) {
             <Header>
               <Logo
                 source={require('../../../assets/images/game-logo.png')}
-                accessibilityLabel="Guess the Word"
+                accessibilityLabel={intl.formatMessage(messages.logo)}
               />
               <Tagline $compact={compact}>
-                {'Aprenda inglês\njogando com amigos'}
+                {intl.formatMessage(messages.tagline)}
               </Tagline>
             </Header>
             <Menu>
@@ -276,26 +279,26 @@ export default function MainScreen({ onPlay }: MainScreenProps) {
               <Rivet $side="left" />
               <Rivet $side="right" />
               <MenuButton
-                label="Jogar"
+                label={intl.formatMessage(messages.play)}
                 primary
                 onPress={() => (onPlay ? onPlay() : setDialog('play'))}
               />
               <MenuButton
-                label="Instruções"
+                label={intl.formatMessage(messages.instructions)}
                 onPress={() => setDialog('instructions')}
               />
               <AboutButton
                 accessibilityRole="button"
                 onPress={() => setDialog('about')}
               >
-                <AboutText>Sobre</AboutText>
+                <AboutText>{intl.formatMessage(messages.about)}</AboutText>
               </AboutButton>
             </Menu>
             <Footer>
               <PaperTop />
               <PaperBottom />
               <FooterText $compact={compact}>
-                {'Um celular, amigos\nreunidos e inglês\nna ponta da língua.'}
+                {intl.formatMessage(messages.footer)}
               </FooterText>
             </Footer>
           </Content>
@@ -311,10 +314,15 @@ export default function MainScreen({ onPlay }: MainScreenProps) {
           <DialogPanel accessibilityViewIsModal>
             <ScrollView>
               <DialogTitle accessibilityRole="header">
-                {dialog && dialogs[dialog].title}
+                {dialog && intl.formatMessage(dialogs[dialog].title)}
               </DialogTitle>
-              <DialogText>{dialog && dialogs[dialog].text}</DialogText>
-              <MenuButton label="Voltar" onPress={() => setDialog(null)} />
+              <DialogText>
+                {dialog && intl.formatMessage(dialogs[dialog].text)}
+              </DialogText>
+              <MenuButton
+                label={intl.formatMessage(messages.back)}
+                onPress={() => setDialog(null)}
+              />
             </ScrollView>
           </DialogPanel>
         </ModalBackdrop>
