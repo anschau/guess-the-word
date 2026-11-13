@@ -15,36 +15,38 @@ type MessageValues = {
   NoMessageValues
 >
 
+const screenId = 'selectPlayersScreen'
+
 export default defineMessages<MessageValues>({
-  back: { id: 'selectPlayersScreen.back', defaultMessage: 'Voltar' },
+  back: { id: `${screenId}.back`, defaultMessage: 'Voltar' },
   title: {
-    id: 'selectPlayersScreen.title',
+    id: `${screenId}.title`,
     defaultMessage: 'Quem vai jogar?',
   },
   subtitle: {
-    id: 'selectPlayersScreen.subtitle',
+    id: `${screenId}.subtitle`,
     defaultMessage: 'Adicione os nomes de quem está na brincadeira.',
   },
   participant: {
-    id: 'selectPlayersScreen.participant',
+    id: `${screenId}.participant`,
     defaultMessage: 'Participante {number}',
   },
   add: {
-    id: 'selectPlayersScreen.add',
+    id: `${screenId}.add`,
     defaultMessage: 'Adicionar participante',
   },
-  next: { id: 'selectPlayersScreen.next', defaultMessage: 'Avançar' },
+  next: { id: `${screenId}.next`, defaultMessage: 'Avançar' },
   required: {
-    id: 'selectPlayersScreen.required',
+    id: `${screenId}.required`,
     defaultMessage:
       'Preencha o nome de pelo menos dois participantes para avançar.',
   },
   comingSoonTitle: {
-    id: 'selectPlayersScreen.comingSoonTitle',
+    id: `${screenId}.comingSoonTitle`,
     defaultMessage: 'Participantes prontos!',
   },
   comingSoonText: {
-    id: 'selectPlayersScreen.comingSoonText',
+    id: `${screenId}.comingSoonText`,
     defaultMessage: 'A próxima etapa da partida estará disponível em breve.',
   },
 })

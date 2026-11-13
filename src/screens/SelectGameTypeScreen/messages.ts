@@ -18,41 +18,43 @@ type MessageValues = {
   NoMessageValues
 >
 
+const screenId = 'selectGameType'
+
 export default defineMessages<MessageValues>({
   title: {
-    id: 'selectGameType.title',
+    id: `${screenId}.title`,
     defaultMessage: 'Como vocês\nquerem jogar?',
   },
-  easy: { id: 'selectGameType.easy', defaultMessage: gameTypes.easy.title },
+  easy: { id: `${screenId}.easy`, defaultMessage: gameTypes.easy.title },
   easyDescription: {
-    id: 'selectGameType.easyDescription',
+    id: `${screenId}.easyDescription`,
     defaultMessage: gameTypes.easy.description,
   },
-  medium: { id: 'selectGameType.medium', defaultMessage: gameTypes.medium.title },
+  medium: { id: `${screenId}.medium`, defaultMessage: gameTypes.medium.title },
   mediumDescription: {
-    id: 'selectGameType.mediumDescription',
+    id: `${screenId}.mediumDescription`,
     defaultMessage: gameTypes.medium.description,
   },
-  hard: { id: 'selectGameType.hard', defaultMessage: gameTypes.hard.title },
+  hard: { id: `${screenId}.hard`, defaultMessage: gameTypes.hard.title },
   hardDescription: {
-    id: 'selectGameType.hardDescription',
+    id: `${screenId}.hardDescription`,
     defaultMessage: gameTypes.hard.description,
   },
   summary: {
-    id: 'selectGameType.summary',
+    id: `${screenId}.summary`,
     defaultMessage:
       '{players} participantes · {rounds} rodadas · {words} palavras',
   },
   start: {
-    id: 'selectGameType.start',
+    id: `${screenId}.start`,
     defaultMessage: 'Começar partida',
   },
   comingSoonTitle: {
-    id: 'selectGameType.comingSoonTitle',
+    id: `${screenId}.comingSoonTitle`,
     defaultMessage: 'Tudo pronto!',
   },
   comingSoonText: {
-    id: 'selectGameType.comingSoonText',
+    id: `${screenId}.comingSoonText`,
     defaultMessage: 'A próxima etapa da partida estará disponível em breve.',
   },
 })

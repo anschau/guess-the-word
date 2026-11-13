@@ -1,54 +1,56 @@
 import { defineMessages } from 'react-intl'
 
+const screenId = 'mainScreen'
+
 export default defineMessages({
   logo: {
-    id: 'mainScreen.logo',
+    id: `${screenId}.logo`,
     defaultMessage: 'Guess the Word',
   },
   tagline: {
-    id: 'mainScreen.tagline',
+    id: `${screenId}.tagline`,
     defaultMessage: 'Aprenda inglês\njogando com amigos',
   },
   play: {
-    id: 'mainScreen.play',
+    id: `${screenId}.play`,
     defaultMessage: 'Jogar',
   },
   instructions: {
-    id: 'mainScreen.instructions',
+    id: `${screenId}.instructions`,
     defaultMessage: 'Instruções',
   },
   about: {
-    id: 'mainScreen.about',
+    id: `${screenId}.about`,
     defaultMessage: 'Sobre',
   },
   footer: {
-    id: 'mainScreen.footer',
+    id: `${screenId}.footer`,
     defaultMessage: 'Um celular, amigos\nreunidos e inglês\nna ponta da língua.',
   },
   back: {
-    id: 'mainScreen.back',
+    id: `${screenId}.back`,
     defaultMessage: 'Voltar',
   },
   playTitle: {
-    id: 'mainScreen.playTitle',
+    id: `${screenId}.playTitle`,
     defaultMessage: 'Vamos jogar?',
   },
   playText: {
-    id: 'mainScreen.playText',
+    id: `${screenId}.playText`,
     defaultMessage:
       'A partida ainda está em preparação. Em breve, você poderá reunir os amigos e começar a jogar por aqui!',
   },
   instructionsText: {
-    id: 'mainScreen.instructionsText',
+    id: `${screenId}.instructionsText`,
     defaultMessage:
       'Um celular, amigos reunidos e inglês na ponta da língua! A proposta é aprender inglês tentando adivinhar palavras juntos. As regras da partida estarão disponíveis em breve.',
   },
   aboutTitle: {
-    id: 'mainScreen.aboutTitle',
+    id: `${screenId}.aboutTitle`,
     defaultMessage: 'Sobre o jogo',
   },
   aboutText: {
-    id: 'mainScreen.aboutText',
+    id: `${screenId}.aboutText`,
     defaultMessage:
       'Guess the Word é um jogo para aprender inglês com amigos. Transforme o tempo juntos em uma oportunidade de descobrir novas palavras!',
   },
