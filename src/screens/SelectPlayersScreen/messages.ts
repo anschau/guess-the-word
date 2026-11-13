@@ -16,7 +16,7 @@ type MessageValues = {
 >
 
 export default defineMessages<MessageValues>({
-  back: { id: 'selectPlayersScreen.back', defaultMessage: '← Voltar' },
+  back: { id: 'selectPlayersScreen.back', defaultMessage: 'Voltar' },
   title: {
     id: 'selectPlayersScreen.title',
     defaultMessage: 'Quem vai jogar?',
@@ -31,9 +31,9 @@ export default defineMessages<MessageValues>({
   },
   add: {
     id: 'selectPlayersScreen.add',
-    defaultMessage: '+ Adicionar participante',
+    defaultMessage: 'Adicionar participante',
   },
-  next: { id: 'selectPlayersScreen.next', defaultMessage: 'Avançar →' },
+  next: { id: 'selectPlayersScreen.next', defaultMessage: 'Avançar' },
   required: {
     id: 'selectPlayersScreen.required',
     defaultMessage: 'Preencha o nome de todos os participantes para avançar.',

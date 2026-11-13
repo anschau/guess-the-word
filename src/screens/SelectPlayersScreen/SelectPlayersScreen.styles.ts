@@ -28,6 +28,13 @@ export const Content = styled.View({
 
 export const BackButton = styled(PixelButton)({ alignSelf: 'flex-start' })
 
+export const ButtonContent = styled.View({
+  flexDirection: 'row',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: 10,
+})
+
 export const BackLabel = styled.Text({
   ...getTextVariantStyles(TypographyVariant.BUTTON),
   fontSize: 25,

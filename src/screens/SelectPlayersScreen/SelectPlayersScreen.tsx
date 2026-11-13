@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { FontAwesome } from '@react-native-vector-icons/fontawesome/static'
 import type { StackScreenProps } from '@react-navigation/stack'
 import type { MainStackParamList } from '../../navigation/MainStack'
 import { useIntl } from 'react-intl'
@@ -6,6 +7,7 @@ import { Alert, Platform, StatusBar } from 'react-native'
 import { useCompact } from '../../config/config'
 import PixelButton from '../../components/PixelButton'
 import PixelTextInput from '../../components/PixelTextInput'
+import { theme } from '../../theme/theme'
 import {
   BackgroundContainer,
   BackgroundImage,
@@ -19,6 +21,7 @@ import {
   AddLabel,
   BackButton,
   BackLabel,
+  ButtonContent,
   Content,
   ErrorText,
   Field,
@@ -78,8 +81,20 @@ export default function SelectPlayersScreen({
         >
           <ScreenScroll>
             <Content>
-              <BackButton variant="neutral" onPress={() => navigation.goBack()}>
-                <BackLabel>{intl.formatMessage(messages.back)}</BackLabel>
+              <BackButton
+                variant="neutral"
+                accessibilityLabel={intl.formatMessage(messages.back)}
+                onPress={() => navigation.goBack()}
+              >
+                <ButtonContent>
+                  <FontAwesome
+                    name="arrow-left"
+                    size={20}
+                    color={theme.colors.text}
+                    accessible={false}
+                  />
+                  <BackLabel>{intl.formatMessage(messages.back)}</BackLabel>
+                </ButtonContent>
               </BackButton>
               <Header>
                 <Title $compact={compact} accessibilityRole="header">
@@ -125,16 +140,37 @@ export default function SelectPlayersScreen({
                   </ErrorText>
                 )}
                 <PixelButton
+                  accessibilityLabel={intl.formatMessage(messages.add)}
                   onPress={() => setPlayers(current => [...current, ''])}
                 >
-                  <AddLabel $compact={compact}>
-                    {intl.formatMessage(messages.add)}
-                  </AddLabel>
+                  <ButtonContent>
+                    <FontAwesome
+                      name="plus"
+                      size={compact ? 16 : 20}
+                      color="#213b45"
+                      accessible={false}
+                    />
+                    <AddLabel $compact={compact}>
+                      {intl.formatMessage(messages.add)}
+                    </AddLabel>
+                  </ButtonContent>
                 </PixelButton>
-                <PixelButton variant="primary" onPress={handleContinue}>
-                  <ButtonLabel $primary>
-                    {intl.formatMessage(messages.next)}
-                  </ButtonLabel>
+                <PixelButton
+                  variant="primary"
+                  accessibilityLabel={intl.formatMessage(messages.next)}
+                  onPress={handleContinue}
+                >
+                  <ButtonContent>
+                    <ButtonLabel $primary>
+                      {intl.formatMessage(messages.next)}
+                    </ButtonLabel>
+                    <FontAwesome
+                      name="arrow-right"
+                      size={28}
+                      color="#412704"
+                      accessible={false}
+                    />
+                  </ButtonContent>
                 </PixelButton>
               </Panel>
             </Content>
