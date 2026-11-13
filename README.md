@@ -41,20 +41,30 @@ Os arquivos estão em `assets/fonts`, registrados no iOS e copiados para
 `android/app/src/main/assets/fonts`. Recompile o app após instalar ou alterar fontes;
 o Fast Refresh não atualiza recursos nativos.
 
-Use os estilos de `src/theme/typography.ts` nas telas:
+As cores ficam em `src/theme/theme.ts`. As fontes, variantes de texto e ajustes
+para telas compactas ficam em `src/theme/typography.ts`.
+
+Nos componentes com `styled-components/native`, use `getTextVariantStyles`:
 
 ```tsx
-import { Text } from 'react-native';
-import { typography } from './src/theme/typography';
+import styled from 'styled-components/native'
+import { theme } from './src/theme/theme'
+import { getTextVariantStyles, TextVariant } from './src/theme/typography'
 
-<Text style={typography.title}>Guess The Word</Text>;
-<Text style={typography.text}>Aprenda inglês jogando.</Text>;
+const Title = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
+  ...getTextVariantStyles(TextVariant.H4, $compact),
+  color: theme.colors.text,
+}))
 ```
 
-Também é possível usar `fonts.text` e `fonts.title` em `fontFamily`.
+Passe o resultado de `useCompact`, de `src/config/config.ts`, para `$compact`.
+O segundo argumento de `getTextVariantStyles` é opcional e assume `false`.
+Esse helper adapta `lineHeight` para o formato usado por styled-components.
+Para a prop `style` de um `Text` nativo, use `TextVariantStyles[TextVariant.H4]`,
+que mantém os valores numéricos do React Native.
+
 O peso Bold já faz parte do arquivo Motion Control; não é necessário adicionar
-`fontWeight`. A tela padrão `NewAppScreen` pertence a uma dependência e não usa
-esses estilos automaticamente.
+`fontWeight`.
 
 Os avisos originais estão em `assets/font-licenses` e são incluídos nos apps.
 O site e o README do autor indicam OFL para Motion Control, mas os metadados do

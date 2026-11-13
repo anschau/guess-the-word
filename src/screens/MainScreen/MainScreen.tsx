@@ -5,12 +5,13 @@ import type { PressableStateCallbackType } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import styled from 'styled-components/native'
 import { useCompact } from '../../config/config'
+import { theme } from '../../theme/theme'
 import messages from './messages'
 import {
   getTextVariantStyles,
   TextVariant,
   TextVariantStyles,
-} from '../../config/TextStyles'
+} from '../../theme/typography'
 
 const BackgroundContainer = styled.View({
   flex: 1,
@@ -46,15 +47,15 @@ const Logo = styled.Image({
 })
 
 const Menu = styled.View({
-  backgroundColor: '#e7d0ae',
+  backgroundColor: theme.colors.background,
   borderWidth: 3,
-  borderColor: '#1e140b',
+  borderColor: theme.colors.border,
   paddingHorizontal: 24,
   paddingTop: 40,
   paddingBottom: 16,
   gap: 16,
   marginHorizontal: 5,
-  boxShadow: '3px 6px 0px #28180e',
+  boxShadow: `3px 6px 0px ${theme.colors.shadow}`,
 })
 
 const PaperTop = styled.View.attrs({ pointerEvents: 'none' })({
@@ -63,9 +64,9 @@ const PaperTop = styled.View.attrs({ pointerEvents: 'none' })({
   top: -7,
   left: 18,
   right: 18,
-  backgroundColor: '#e7d0ae',
+  backgroundColor: theme.colors.background,
   borderTopWidth: 3,
-  borderColor: '#1e140b',
+  borderColor: theme.colors.border,
 })
 
 const PaperBottom = styled.View.attrs({ pointerEvents: 'none' })({
@@ -74,9 +75,9 @@ const PaperBottom = styled.View.attrs({ pointerEvents: 'none' })({
   bottom: -7,
   left: 22,
   right: 14,
-  backgroundColor: '#e7d0ae',
+  backgroundColor: theme.colors.background,
   borderBottomWidth: 3,
-  borderColor: '#1e140b',
+  borderColor: theme.colors.border,
 })
 
 const AboutText = styled.Text({
@@ -85,14 +86,14 @@ const AboutText = styled.Text({
 })
 
 const Footer = styled.View({
-  backgroundColor: '#e7d0ae',
-  borderColor: '#1e140b',
+  backgroundColor: theme.colors.background,
+  borderColor: theme.colors.border,
   borderWidth: 3,
   paddingHorizontal: 14,
   paddingVertical: 14,
   marginHorizontal: 8,
   marginBottom: 9,
-  boxShadow: '2px 5px 0px #28180e',
+  boxShadow: `2px 5px 0px ${theme.colors.shadow}`,
 })
 
 const ModalBackdrop = styled.View({
@@ -107,7 +108,7 @@ const DialogPanel = styled.View({
   width: '100%',
   maxWidth: 420,
   maxHeight: '85%',
-  backgroundColor: '#e7d0ae',
+  backgroundColor: theme.colors.background,
   borderColor: '#20160c',
   borderWidth: 4,
   padding: 24,
