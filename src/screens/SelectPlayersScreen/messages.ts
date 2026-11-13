@@ -36,7 +36,8 @@ export default defineMessages<MessageValues>({
   next: { id: 'selectPlayersScreen.next', defaultMessage: 'Avançar' },
   required: {
     id: 'selectPlayersScreen.required',
-    defaultMessage: 'Preencha o nome de todos os participantes para avançar.',
+    defaultMessage:
+      'Preencha o nome de pelo menos dois participantes para avançar.',
   },
   comingSoonTitle: {
     id: 'selectPlayersScreen.comingSoonTitle',

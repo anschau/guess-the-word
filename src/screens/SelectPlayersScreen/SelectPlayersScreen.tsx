@@ -8,6 +8,7 @@ import { useCompact } from '../../config/config'
 import PixelButton from '../../components/PixelButton'
 import PixelTextInput from '../../components/PixelTextInput'
 import { theme } from '../../theme/theme'
+import { usePlayersRepository } from '../../repositories/playersRepository'
 import {
   BackgroundContainer,
   BackgroundImage,
@@ -38,32 +39,30 @@ import messages from './messages'
 type SelectPlayersScreenProps = StackScreenProps<
   MainStackParamList,
   'SelectPlayers'
-> & {
-  onContinue?: (players: string[]) => void
-}
+>
 
 export default function SelectPlayersScreen({
   navigation,
-  onContinue,
 }: SelectPlayersScreenProps) {
   const intl = useIntl()
   const compact = useCompact()
+  const savePlayers = usePlayersRepository(state => state.setPlayers)
   const [players, setPlayers] = useState(['', '', ''])
   const [submitted, setSubmitted] = useState(false)
-  const hasEmptyName = players.some(name => !name.trim())
+  const filledPlayers = players
+    .map(name => name.trim())
+    .filter(name => name !== '')
+  const hasEnoughPlayers = filledPlayers.length >= 2
 
   function handleContinue() {
     setSubmitted(true)
-    if (hasEmptyName) return
+    if (!hasEnoughPlayers) return
 
-    if (onContinue) {
-      onContinue(players.map(name => name.trim()))
-    } else {
-      Alert.alert(
-        intl.formatMessage(messages.comingSoonTitle),
-        intl.formatMessage(messages.comingSoonText),
-      )
-    }
+    savePlayers(filledPlayers)
+    Alert.alert(
+      intl.formatMessage(messages.comingSoonTitle),
+      intl.formatMessage(messages.comingSoonText),
+    )
   }
 
   return (
@@ -118,7 +117,7 @@ export default function SelectPlayersScreen({
                       <Label>{label}</Label>
                       <PixelTextInput
                         accessibilityLabel={label}
-                        invalid={submitted && !name.trim()}
+                        invalid={submitted && !hasEnoughPlayers && !name.trim()}
                         value={name}
                         autoCapitalize="words"
                         autoCorrect={false}
@@ -134,7 +133,7 @@ export default function SelectPlayersScreen({
                     </Field>
                   )
                 })}
-                {submitted && hasEmptyName && (
+                {submitted && !hasEnoughPlayers && (
                   <ErrorText accessibilityLiveRegion="polite">
                     {intl.formatMessage(messages.required)}
                   </ErrorText>
