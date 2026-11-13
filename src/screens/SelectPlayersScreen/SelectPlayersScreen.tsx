@@ -4,12 +4,12 @@ import type { MainStackParamList } from '../../navigation/MainStack'
 import { useIntl } from 'react-intl'
 import { Alert, Platform, StatusBar } from 'react-native'
 import { useCompact } from '../../config/config'
+import PixelButton from '../../components/PixelButton'
+import PixelTextInput from '../../components/PixelTextInput'
 import {
   BackgroundContainer,
   BackgroundImage,
-  ButtonFace,
   ButtonLabel,
-  ButtonOutline,
   PaperBottom,
   PaperTop,
   Rivet,
@@ -18,13 +18,11 @@ import {
 import {
   AddLabel,
   BackButton,
-  BackFace,
   BackLabel,
   Content,
   ErrorText,
   Field,
   Header,
-  Input,
   KeyboardContainer,
   Label,
   Panel,
@@ -80,13 +78,8 @@ export default function SelectPlayersScreen({
         >
           <ScreenScroll>
             <Content>
-              <BackButton
-                accessibilityRole="button"
-                onPress={() => navigation.goBack()}
-              >
-                <BackFace>
-                  <BackLabel>{intl.formatMessage(messages.back)}</BackLabel>
-                </BackFace>
+              <BackButton variant="neutral" onPress={() => navigation.goBack()}>
+                <BackLabel>{intl.formatMessage(messages.back)}</BackLabel>
               </BackButton>
               <Header>
                 <Title $compact={compact} accessibilityRole="header">
@@ -108,9 +101,9 @@ export default function SelectPlayersScreen({
                   return (
                     <Field key={index}>
                       <Label>{label}</Label>
-                      <Input
+                      <PixelTextInput
                         accessibilityLabel={label}
-                        $invalid={submitted && !name.trim()}
+                        invalid={submitted && !name.trim()}
                         value={name}
                         autoCapitalize="words"
                         autoCorrect={false}
@@ -131,26 +124,18 @@ export default function SelectPlayersScreen({
                     {intl.formatMessage(messages.required)}
                   </ErrorText>
                 )}
-                <ButtonOutline
-                  accessibilityRole="button"
+                <PixelButton
                   onPress={() => setPlayers(current => [...current, ''])}
                 >
-                  <ButtonFace $primary={false}>
-                    <AddLabel $compact={compact}>
-                      {intl.formatMessage(messages.add)}
-                    </AddLabel>
-                  </ButtonFace>
-                </ButtonOutline>
-                <ButtonOutline
-                  accessibilityRole="button"
-                  onPress={handleContinue}
-                >
-                  <ButtonFace $primary>
-                    <ButtonLabel $primary>
-                      {intl.formatMessage(messages.next)}
-                    </ButtonLabel>
-                  </ButtonFace>
-                </ButtonOutline>
+                  <AddLabel $compact={compact}>
+                    {intl.formatMessage(messages.add)}
+                  </AddLabel>
+                </PixelButton>
+                <PixelButton variant="primary" onPress={handleContinue}>
+                  <ButtonLabel $primary>
+                    {intl.formatMessage(messages.next)}
+                  </ButtonLabel>
+                </PixelButton>
               </Panel>
             </Content>
           </ScreenScroll>

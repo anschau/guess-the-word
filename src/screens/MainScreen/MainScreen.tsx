@@ -5,6 +5,7 @@ import type { MainStackParamList } from '../../navigation/MainStack'
 import { useIntl } from 'react-intl'
 import { Modal, ScrollView, StatusBar } from 'react-native'
 import { useCompact } from '../../config/config'
+import PixelButton from '../../components/PixelButton'
 import messages from './messages'
 import {
   BackgroundContainer,
@@ -26,9 +27,7 @@ import {
   Tagline,
   FooterText,
   Rivet,
-  ButtonOutline,
   AboutButton,
-  ButtonFace,
   ButtonLabel,
 } from './MainScreen.styles'
 
@@ -55,11 +54,9 @@ function MenuButton({
   onPress: () => void
 }) {
   return (
-    <ButtonOutline accessibilityRole="button" onPress={onPress}>
-      <ButtonFace $primary={primary}>
-        <ButtonLabel $primary={primary}>{label}</ButtonLabel>
-      </ButtonFace>
-    </ButtonOutline>
+    <PixelButton variant={primary ? 'primary' : 'secondary'} onPress={onPress}>
+      <ButtonLabel $primary={primary}>{label}</ButtonLabel>
+    </PixelButton>
   )
 }
 

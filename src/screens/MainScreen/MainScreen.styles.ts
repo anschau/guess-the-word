@@ -133,11 +133,13 @@ export const Tagline = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   textShadow: '2px 3px 1px #2c170e',
 }))
 
-export const FooterText = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
-  ...getTextVariantStyles(TypographyVariant.H5, $compact),
-  textAlign: 'center',
-  letterSpacing: 0.5,
-}))
+export const FooterText = styled.Text<{ $compact: boolean }>(
+  ({ $compact }) => ({
+    ...getTextVariantStyles(TypographyVariant.H5, $compact),
+    textAlign: 'center',
+    letterSpacing: 0.5,
+  }),
+)
 
 export const Rivet = styled.View.attrs({ pointerEvents: 'none' })<{
   $side: 'left' | 'right'
@@ -160,49 +162,20 @@ export const Rivet = styled.View.attrs({ pointerEvents: 'none' })<{
 const pressedStyle = ({ pressed }: PressableStateCallbackType) =>
   pressed ? { transform: [{ translateY: 3 }], opacity: 0.85 } : undefined
 
-export const ButtonOutline = styled.Pressable.attrs({ style: pressedStyle })({
-  borderWidth: 3,
-  borderColor: '#171309',
-  borderRadius: 6,
-  boxShadow: '0px 5px 0px #b29e81',
-  overflow: 'hidden',
-})
-
 export const AboutButton = styled.Pressable.attrs({ style: pressedStyle })({
   minHeight: 48,
   alignItems: 'center',
   justifyContent: 'center',
 })
 
-export const ButtonFace = styled.View<{ $primary: boolean }>(({ $primary }) => ({
-  ...{
-    borderTopWidth: 2,
-    borderBottomWidth: 7,
-    paddingHorizontal: 4,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  ...($primary
-    ? {
-        backgroundColor: '#e3b550',
-        borderTopColor: '#f2cf7c',
-        borderBottomColor: '#b98c36',
-        minHeight: 76,
-      }
-    : {
-        backgroundColor: '#a7c6d0',
-        borderTopColor: '#c0d9df',
-        borderBottomColor: '#7c9da7',
-        minHeight: 54,
-      }),
-}))
-
-export const ButtonLabel = styled.Text<{ $primary: boolean }>(({ $primary }) => ({
-  ...TypographyVariantStyles[TypographyVariant.BUTTON],
-  ...($primary
-    ? {
-        fontSize: TypographyVariantStyles[TypographyVariant.H1].fontSize,
-        color: '#412704',
-      }
-    : { color: '#213b45' }),
-}))
+export const ButtonLabel = styled.Text<{ $primary: boolean }>(
+  ({ $primary }) => ({
+    ...TypographyVariantStyles[TypographyVariant.BUTTON],
+    ...($primary
+      ? {
+          fontSize: TypographyVariantStyles[TypographyVariant.H1].fontSize,
+          color: '#412704',
+        }
+      : { color: '#213b45' }),
+  }),
+)

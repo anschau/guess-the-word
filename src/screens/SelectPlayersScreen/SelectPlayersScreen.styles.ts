@@ -1,11 +1,12 @@
 import styled from 'styled-components/native'
-import { theme } from '../../theme/theme'
+
 import {
   fonts,
   getTextVariantStyles,
   TypographyVariant,
 } from '../../theme/typography'
-import { ButtonOutline, Menu } from '../MainScreen/MainScreen.styles'
+import { Menu } from '../MainScreen/MainScreen.styles'
+import PixelButton from '../../components/PixelButton'
 
 export const KeyboardContainer = styled.KeyboardAvoidingView({ flex: 1 })
 
@@ -25,18 +26,7 @@ export const Content = styled.View({
   gap: 24,
 })
 
-export const BackButton = styled(ButtonOutline)({ alignSelf: 'flex-start' })
-
-export const BackFace = styled.View({
-  backgroundColor: theme.colors.background,
-  borderTopWidth: 2,
-  borderTopColor: '#f9e7c6',
-  borderBottomWidth: 4,
-  borderBottomColor: '#b29e81',
-  paddingHorizontal: 14,
-  minHeight: 40,
-  justifyContent: 'center',
-})
+export const BackButton = styled(PixelButton)({ alignSelf: 'flex-start' })
 
 export const BackLabel = styled.Text({
   ...getTextVariantStyles(TypographyVariant.BUTTON),
@@ -71,20 +61,6 @@ export const Label = styled.Text({
   ...getTextVariantStyles(TypographyVariant.H5),
   fontFamily: fonts.title,
 })
-
-export const Input = styled.TextInput<{ $invalid: boolean }>(
-  ({ $invalid }) => ({
-    ...getTextVariantStyles(TypographyVariant.BODY1),
-    backgroundColor: '#fcebcf',
-    borderColor: $invalid ? '#9b3526' : theme.colors.border,
-    borderWidth: 3,
-    borderRadius: 6,
-    minHeight: 56,
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    boxShadow: '0px 4px 0px #b29e81',
-  }),
-)
 
 export const AddLabel = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   ...getTextVariantStyles(TypographyVariant.BUTTON),
