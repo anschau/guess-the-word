@@ -3,7 +3,7 @@ import { FontAwesome } from '@react-native-vector-icons/fontawesome/static'
 import type { StackScreenProps } from '@react-navigation/stack'
 import type { MainStackParamList } from '../../navigation/MainStack'
 import { useIntl } from 'react-intl'
-import { Alert, Platform, StatusBar } from 'react-native'
+import { Platform, StatusBar } from 'react-native'
 import { useCompact } from '../../config/config'
 import PixelButton from '../../components/PixelButton'
 import PixelTextInput from '../../components/PixelTextInput'
@@ -59,10 +59,7 @@ export default function SelectPlayersScreen({
     if (!hasEnoughPlayers) return
 
     savePlayers(filledPlayers)
-    Alert.alert(
-      intl.formatMessage(messages.comingSoonTitle),
-      intl.formatMessage(messages.comingSoonText),
-    )
+    navigation.navigate('SelectGameType')
   }
 
   return (
