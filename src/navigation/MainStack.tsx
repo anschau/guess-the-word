@@ -3,11 +3,13 @@ import { createStackNavigator } from '@react-navigation/stack'
 import MainScreen from '../screens/MainScreen/MainScreen'
 import SelectPlayersScreen from '../screens/SelectPlayersScreen/SelectPlayersScreen'
 import SelectGameTypeScreen from '../screens/SelectGameTypeScreen/SelectGameTypeScreen'
+import SwitchTurnScreen from '../screens/SwitchTurnScreen/SwitchTurnScreen'
 
 export type MainStackParamList = {
   Main: undefined
   SelectPlayers: undefined
   SelectGameType: undefined
+  SwitchTurn: { playerName: string; round: number; totalRounds: number }
 }
 
 const Stack = createStackNavigator<MainStackParamList>()
@@ -22,6 +24,7 @@ export default function MainStack() {
         <Stack.Screen name="Main" component={MainScreen} />
         <Stack.Screen name="SelectPlayers" component={SelectPlayersScreen} />
         <Stack.Screen name="SelectGameType" component={SelectGameTypeScreen} />
+        <Stack.Screen name="SwitchTurn" component={SwitchTurnScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

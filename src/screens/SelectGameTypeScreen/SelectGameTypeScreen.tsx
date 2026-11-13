@@ -1,6 +1,8 @@
 import { FontAwesome } from '@react-native-vector-icons/fontawesome/static'
 import { useIntl } from 'react-intl'
-import { Alert, StatusBar } from 'react-native'
+import { StatusBar } from 'react-native'
+import type { StackScreenProps } from '@react-navigation/stack'
+import type { MainStackParamList } from '../../navigation/MainStack'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import { usePlayersRepository } from '../../repositories/playersRepository'
@@ -31,7 +33,14 @@ import messages from './messages'
 
 const rounds = 3
 
-export default function SelectGameTypeScreen() {
+type SelectGameTypeScreenProps = StackScreenProps<
+  MainStackParamList,
+  'SelectGameType'
+>
+
+export default function SelectGameTypeScreen({
+  navigation,
+}: SelectGameTypeScreenProps) {
   const intl = useIntl()
   const compact = useCompact()
   const players = usePlayersRepository(state => state.players)
@@ -39,10 +48,16 @@ export default function SelectGameTypeScreen() {
   const setSelectedType = useGameTypeRepository(state => state.setGameType)
 
   function handleStart() {
-    Alert.alert(
-      intl.formatMessage(messages.comingSoonTitle),
-      intl.formatMessage(messages.comingSoonText),
-    )
+    if (players.length < 2) {
+      navigation.navigate('SelectPlayers')
+      return
+    }
+
+    navigation.navigate('SwitchTurn', {
+      playerName: players[0],
+      round: 1,
+      totalRounds: rounds,
+    })
   }
 
   return (
