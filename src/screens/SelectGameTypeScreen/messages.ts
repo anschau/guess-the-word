@@ -1,5 +1,6 @@
 import { defineMessages } from 'react-intl'
 import type { NoMessageValues } from 'react-intl'
+import { gameTypes } from '../../models/GameType'
 
 type MessageValues = {
   summary: { players: number; rounds: number; words: number }
@@ -22,20 +23,20 @@ export default defineMessages<MessageValues>({
     id: 'selectGameType.title',
     defaultMessage: 'Como vocês\nquerem jogar?',
   },
-  easy: { id: 'selectGameType.easy', defaultMessage: 'Fácil' },
+  easy: { id: 'selectGameType.easy', defaultMessage: gameTypes.easy.title },
   easyDescription: {
     id: 'selectGameType.easyDescription',
-    defaultMessage: 'Palavras comuns e frases simples.',
+    defaultMessage: gameTypes.easy.description,
   },
-  medium: { id: 'selectGameType.medium', defaultMessage: 'Médio' },
+  medium: { id: 'selectGameType.medium', defaultMessage: gameTypes.medium.title },
   mediumDescription: {
     id: 'selectGameType.mediumDescription',
-    defaultMessage: 'Vocabulário mais variado.',
+    defaultMessage: gameTypes.medium.description,
   },
-  hard: { id: 'selectGameType.hard', defaultMessage: 'Difícil' },
+  hard: { id: 'selectGameType.hard', defaultMessage: gameTypes.hard.title },
   hardDescription: {
     id: 'selectGameType.hardDescription',
-    defaultMessage: 'Palavras e pistas mais desafiadoras.',
+    defaultMessage: gameTypes.hard.description,
   },
   summary: {
     id: 'selectGameType.summary',

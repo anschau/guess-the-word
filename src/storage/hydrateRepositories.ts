@@ -1,10 +1,10 @@
 import { useGameRepository } from '../repositories/gameRepository'
 import { usePlayersRepository } from '../repositories/playersRepository'
-import { usePreferencesRepository } from '../repositories/preferencesRepository'
+import { useGameTypeRepository } from '../repositories/gameTypeRepository'
 
 const repositories = [
   usePlayersRepository,
-  usePreferencesRepository,
+  useGameTypeRepository,
   useGameRepository,
 ]
 

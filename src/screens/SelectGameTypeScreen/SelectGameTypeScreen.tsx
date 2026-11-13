@@ -4,7 +4,8 @@ import { Alert, StatusBar } from 'react-native'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import { usePlayersRepository } from '../../repositories/playersRepository'
-import { usePreferencesRepository } from '../../repositories/preferencesRepository'
+import { useGameTypeRepository } from '../../repositories/gameTypeRepository'
+import { gameTypes } from '../../models/GameType'
 import { theme } from '../../theme/theme'
 import {
   BackgroundContainer,
@@ -28,32 +29,14 @@ import {
 } from './SelectGameTypeScreen.styles'
 import messages from './messages'
 
-const gameTypes = [
-  {
-    value: 'easy',
-    title: messages.easy,
-    description: messages.easyDescription,
-  },
-  {
-    value: 'medium',
-    title: messages.medium,
-    description: messages.mediumDescription,
-  },
-  {
-    value: 'hard',
-    title: messages.hard,
-    description: messages.hardDescription,
-  },
-] as const
-
 const rounds = 3
 
 export default function SelectGameTypeScreen() {
   const intl = useIntl()
   const compact = useCompact()
   const players = usePlayersRepository(state => state.players)
-  const selectedType = usePreferencesRepository(state => state.difficulty)
-  const setSelectedType = usePreferencesRepository(state => state.setDifficulty)
+  const selectedType = useGameTypeRepository(state => state.gameType)
+  const setSelectedType = useGameTypeRepository(state => state.setGameType)
 
   function handleStart() {
     Alert.alert(
@@ -82,18 +65,22 @@ export default function SelectGameTypeScreen() {
               <PaperBottom />
               <Rivet $side="left" />
               <Rivet $side="right" />
-              {gameTypes.map(gameType => {
-                const selected = selectedType === gameType.value
-                const title = intl.formatMessage(gameType.title)
-                const description = intl.formatMessage(gameType.description)
+              {Object.values(gameTypes).map(gameType => {
+                const selected = selectedType.id === gameType.id
+                const title = intl.formatMessage(messages[gameType.id])
+                const description = intl.formatMessage(
+                  messages[`${gameType.id}Description`],
+                )
 
                 return (
                   <PixelButton
-                    key={gameType.value}
+                    key={gameType.id}
                     variant={selected ? 'primary' : 'secondary'}
                     accessibilityLabel={`${title}. ${description}`}
                     accessibilityState={{ selected }}
-                    onPress={() => setSelectedType(gameType.value)}
+                    onPress={() =>
+                      setSelectedType({ id: gameType.id, title, description })
+                    }
                   >
                     <OptionContent>
                       <OptionHeading>

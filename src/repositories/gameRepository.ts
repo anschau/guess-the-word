@@ -1,12 +1,12 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { appStorage } from '../storage/appStorage'
-import type { GameDifficulty } from './preferencesRepository'
+import type { GameTypeId } from '../models/GameType'
 
 export type SavedGame = {
   id: string
   startedAt: string
-  difficulty: GameDifficulty
+  difficulty: GameTypeId
   totalRounds: number
   round: number
   currentPlayerIndex: number
@@ -21,7 +21,7 @@ export const GAME_HISTORY_LIMIT = 20
 type GameRepository = {
   currentGame: SavedGame | null
   history: CompletedGame[]
-  bestScores: Record<GameDifficulty, number>
+  bestScores: Record<GameTypeId, number>
   saveGame: (game: SavedGame) => void
   discardGame: () => void
   finishGame: () => void

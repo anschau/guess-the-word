@@ -1,7 +1,8 @@
 import { appStorage } from '../src/storage/appStorage'
+import { gameTypes } from '../src/models/GameType'
 import { hydrateRepositories } from '../src/storage/hydrateRepositories'
 import { usePlayersRepository } from '../src/repositories/playersRepository'
-import { usePreferencesRepository } from '../src/repositories/preferencesRepository'
+import { useGameTypeRepository } from '../src/repositories/gameTypeRepository'
 import {
   GAME_HISTORY_LIMIT,
   type SavedGame,
@@ -10,7 +11,7 @@ import {
 
 function resetMemory() {
   usePlayersRepository.setState(usePlayersRepository.getInitialState())
-  usePreferencesRepository.setState(usePreferencesRepository.getInitialState())
+  useGameTypeRepository.setState(useGameTypeRepository.getInitialState())
   useGameRepository.setState(useGameRepository.getInitialState())
 }
 
@@ -36,10 +37,10 @@ beforeEach(async () => {
   await appStorage.clear()
 })
 
-test('restores players, preferences and progress from storage after memory is reset', async () => {
+test('restores players, game type and progress from storage after memory is reset', async () => {
   await hydrateRepositories()
   usePlayersRepository.getState().setPlayers(['Ana', 'Bruno'])
-  usePreferencesRepository.getState().setDifficulty('medium')
+  useGameTypeRepository.getState().setGameType(gameTypes.medium)
   useGameRepository.getState().saveGame(game())
 
   const savedData = await appStorage.getMany(['players', 'preferences', 'game'])
@@ -54,9 +55,27 @@ test('restores players, preferences and progress from storage after memory is re
   await hydrateRepositories()
 
   expect(usePlayersRepository.getState().players).toEqual(['Ana', 'Bruno'])
-  expect(usePreferencesRepository.getState().difficulty).toBe('medium')
+  expect(useGameTypeRepository.getState().gameType).toEqual(gameTypes.medium)
   expect(useGameRepository.getState().currentGame).toEqual(game())
   expect(usePlayersRepository.getState().setPlayers).toEqual(expect.any(Function))
+})
+
+test.each([
+  { version: 1, state: { difficulty: 'hard' } },
+  { version: 2, state: { gameType: 'hard' } },
+])('migrates version $version to a GameType object', async legacy => {
+  await appStorage.setItem(
+    'preferences',
+    JSON.stringify(legacy),
+  )
+
+  await hydrateRepositories()
+
+  expect(useGameTypeRepository.getState().gameType).toEqual(gameTypes.hard)
+  expect(JSON.parse((await appStorage.getItem('preferences'))!)).toEqual({
+    version: 3,
+    state: { gameType: gameTypes.hard },
+  })
 })
 
 test('keeps the last 20 results and retains the record after its game leaves history', async () => {

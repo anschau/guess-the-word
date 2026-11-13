@@ -78,7 +78,9 @@ Os repositórios usam Zustand com `persist` e uma instância do AsyncStorage v3
 se a leitura falhar, oferece uma nova tentativa sem sobrescrever os dados salvos.
 
 - `usePlayersRepository`: nomes confirmados na seleção de jogadores.
-- `usePreferencesRepository`: última dificuldade selecionada.
+- `useGameTypeRepository`: objeto do tipo de jogo selecionado, com `id`
+  (`easy`, `medium` ou `hard`), `title` e `description` (strings), acessado por
+  `gameType` e atualizado com `setGameType`.
 - `useGameRepository`: progresso, maior pontuação individual por dificuldade e
   as últimas 20 partidas concluídas, da mais recente para a mais antiga.
 
@@ -89,7 +91,10 @@ abandonar. `currentGame` contém o progresso a retomar. Cada partida e jogador
 deve receber um ID estável; datas usam o formato ISO. Concluir uma partida
 atualiza progresso, histórico e recordes na mesma entrada persistida.
 
-As entradas têm versão 1. Alterações futuras no formato devem incluir uma
+Jogadores e partidas usam versão 1. O repository de GameType usa versão 3 e
+mantém a chave `preferences` para migrar as strings salvas nas versões 1 e 2
+para objetos completos. Partidas e recordes continuam referenciando o ID.
+Alterações futuras no formato devem incluir uma
 migração no `persist`. Perguntas e respostas não fazem parte dessa persistência.
 Os dados são locais: não há sincronização ou backup em servidor.
 
