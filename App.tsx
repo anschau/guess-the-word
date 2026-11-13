@@ -1,13 +1,16 @@
 import { IntlProvider } from 'react-intl'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
-import MainScreen from './src/screens/MainScreen/MainScreen'
+import MainStack from './src/navigation/MainStack'
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <IntlProvider locale="pt-BR" defaultLocale="pt-BR">
-        <MainScreen />
-      </IntlProvider>
-    </SafeAreaProvider>
+    <GestureHandlerRootView>
+      <SafeAreaProvider>
+        <IntlProvider locale="pt-BR" defaultLocale="pt-BR">
+          <MainStack />
+        </IntlProvider>
+      </SafeAreaProvider>
+    </GestureHandlerRootView>
   )
 }

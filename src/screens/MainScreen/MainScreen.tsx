@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { useNavigation } from '@react-navigation/native'
+import type { StackNavigationProp } from '@react-navigation/stack'
+import type { MainStackParamList } from '../../navigation/MainStack'
 import { useIntl } from 'react-intl'
 import { Modal, ScrollView, StatusBar } from 'react-native'
 import { useCompact } from '../../config/config'
@@ -29,14 +32,9 @@ import {
   ButtonLabel,
 } from './MainScreen.styles'
 
-type MainScreenProps = { onPlay?: () => void }
-type Dialog = 'play' | 'instructions' | 'about'
+type Dialog = 'instructions' | 'about'
 
 const dialogs = {
-  play: {
-    title: messages.playTitle,
-    text: messages.playText,
-  },
   instructions: {
     title: messages.instructions,
     text: messages.instructionsText,
@@ -65,7 +63,9 @@ function MenuButton({
   )
 }
 
-export default function MainScreen({ onPlay }: MainScreenProps) {
+export default function MainScreen() {
+  const navigation =
+    useNavigation<StackNavigationProp<MainStackParamList, 'Main'>>()
   const intl = useIntl()
   const [dialog, setDialog] = useState<Dialog | null>(null)
   const compact = useCompact()
@@ -99,7 +99,7 @@ export default function MainScreen({ onPlay }: MainScreenProps) {
               <MenuButton
                 label={intl.formatMessage(messages.play)}
                 primary
-                onPress={() => (onPlay ? onPlay() : setDialog('play'))}
+                onPress={() => navigation.navigate('SelectPlayers')}
               />
               <MenuButton
                 label={intl.formatMessage(messages.instructions)}

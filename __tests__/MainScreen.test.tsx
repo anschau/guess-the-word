@@ -6,6 +6,9 @@ import MainScreen from '../src/screens/MainScreen/MainScreen'
 import { useCompact } from '../src/config/config'
 
 jest.mock('../src/config/config', () => ({ useCompact: jest.fn() }))
+jest.mock('@react-navigation/native', () => ({
+  useNavigation: () => ({ navigate: jest.fn() }),
+}))
 jest.mock('react-native-safe-area-context', () => ({
   SafeAreaView: require('react-native').View,
 }))
