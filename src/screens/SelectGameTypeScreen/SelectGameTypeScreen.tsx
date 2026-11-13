@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import { FontAwesome } from '@react-native-vector-icons/fontawesome/static'
 import { useIntl } from 'react-intl'
 import { Alert, StatusBar } from 'react-native'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import { usePlayersRepository } from '../../repositories/playersRepository'
+import { usePreferencesRepository } from '../../repositories/preferencesRepository'
 import { theme } from '../../theme/theme'
 import {
   BackgroundContainer,
@@ -46,15 +46,14 @@ const gameTypes = [
   },
 ] as const
 
-type GameType = (typeof gameTypes)[number]['value']
-
 const rounds = 3
 
 export default function SelectGameTypeScreen() {
   const intl = useIntl()
   const compact = useCompact()
   const players = usePlayersRepository(state => state.players)
-  const [selectedType, setSelectedType] = useState<GameType>('easy')
+  const selectedType = usePreferencesRepository(state => state.difficulty)
+  const setSelectedType = usePreferencesRepository(state => state.setDifficulty)
 
   function handleStart() {
     Alert.alert(

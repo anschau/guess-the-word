@@ -47,7 +47,10 @@ export default function SelectPlayersScreen({
   const intl = useIntl()
   const compact = useCompact()
   const savePlayers = usePlayersRepository(state => state.setPlayers)
-  const [players, setPlayers] = useState(['', '', ''])
+  const savedPlayers = usePlayersRepository(state => state.players)
+  const [players, setPlayers] = useState(() =>
+    savedPlayers.length > 0 ? [...savedPlayers] : ['Lucas 1', 'Lucas 2', ''],
+  )
   const [submitted, setSubmitted] = useState(false)
   const filledPlayers = players
     .map(name => name.trim())

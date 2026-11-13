@@ -71,6 +71,28 @@ O site e o README do autor indicam OFL para Motion Control, mas os metadados do
 arquivo ainda dizem “FontStruct Non-Commercial License”; essa divergência foi
 preservada, sem modificar a fonte.
 
+## Dados locais do jogo
+
+Os repositórios usam Zustand com `persist` e uma instância do AsyncStorage v3
+(`guess-the-word`). O aplicativo aguarda a restauração antes de abrir as telas;
+se a leitura falhar, oferece uma nova tentativa sem sobrescrever os dados salvos.
+
+- `usePlayersRepository`: nomes confirmados na seleção de jogadores.
+- `usePreferencesRepository`: última dificuldade selecionada.
+- `useGameRepository`: progresso, maior pontuação individual por dificuldade e
+  as últimas 20 partidas concluídas, da mais recente para a mais antiga.
+
+A tela de partida ainda não está implementada. Quando existir, deve chamar
+`saveGame` com o estado completo após cada mudança (rodada, pontos, jogador da
+vez e IDs das palavras usadas), `finishGame` ao concluir ou `discardGame` ao
+abandonar. `currentGame` contém o progresso a retomar. Cada partida e jogador
+deve receber um ID estável; datas usam o formato ISO. Concluir uma partida
+atualiza progresso, histórico e recordes na mesma entrada persistida.
+
+As entradas têm versão 1. Alterações futuras no formato devem incluir uma
+migração no `persist`. Perguntas e respostas não fazem parte dessa persistência.
+Os dados são locais: não há sincronização ou backup em servidor.
+
 ## Verificações
 
 ```sh
