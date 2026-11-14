@@ -12,6 +12,10 @@ type MessageValues = {
   | 'mediumDescription'
   | 'hard'
   | 'hardDescription'
+  | 'Movie80s'
+  | 'Movie80sDescription'
+  | 'namesOfBrazilianRock'
+  | 'namesOfBrazilianRockDescription'
   | 'start'
   | 'comingSoonTitle'
   | 'comingSoonText',
@@ -39,6 +43,16 @@ export default defineMessages<MessageValues>({
   hardDescription: {
     id: `${screenId}.hardDescription`,
     defaultMessage: gameTypes.hard.description,
+  },
+  Movie80s: { id: `${screenId}.Movie80s`, defaultMessage: gameTypes.Movie80s.title },
+  Movie80sDescription: {
+    id: `${screenId}.Movie80sDescription`,
+    defaultMessage: gameTypes.Movie80s.description,
+  },
+  namesOfBrazilianRock: { id: `${screenId}.namesOfBrazilianRock`, defaultMessage: gameTypes.namesOfBrazilianRock.title },
+  namesOfBrazilianRockDescription: {
+    id: `${screenId}.namesOfBrazilianRockDescription`,
+    defaultMessage: gameTypes.namesOfBrazilianRock.description,
   },
   summary: {
     id: `${screenId}.summary`,
