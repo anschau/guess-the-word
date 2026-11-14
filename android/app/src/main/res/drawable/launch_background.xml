@@ -1,0 +1,8 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <bitmap android:src="@drawable/wood_texture" android:tileMode="repeat" />
+    </item>
+    <item android:width="300dp" android:height="132dp" android:gravity="center">
+        <bitmap android:src="@drawable/game_logo" android:gravity="fill" />
+    </item>
+</layer-list>
