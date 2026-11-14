@@ -31,13 +31,9 @@ import {
   ButtonLabel,
 } from './MainScreen.styles'
 
-type Dialog = 'instructions' | 'about'
+type Dialog = 'about'
 
 const dialogs = {
-  instructions: {
-    title: messages.instructions,
-    text: messages.instructionsText,
-  },
   about: {
     title: messages.aboutTitle,
     text: messages.aboutText,
@@ -100,7 +96,7 @@ export default function MainScreen() {
               />
               <MenuButton
                 label={intl.formatMessage(messages.instructions)}
-                onPress={() => setDialog('instructions')}
+                onPress={() => navigation.navigate('Instruction')}
               />
               <AboutButton
                 accessibilityRole="button"
