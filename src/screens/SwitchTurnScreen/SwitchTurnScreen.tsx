@@ -54,7 +54,11 @@ export default function SwitchTurnScreen({
       <SafeArea>
         <ScreenScroll>
           <Content>
-            <GameScoreHeader>
+            <GameScoreHeader
+              onGameEnded={gameId =>
+                navigation.replace('FinalScore', { gameId })
+              }
+            >
               <RoundLabel $compact={compact}>
                 {intl.formatMessage(messages.roundLabel)}{' '}
                 <RoundValue $compact={compact}>

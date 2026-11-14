@@ -65,21 +65,64 @@ test.each([GuessTheWordScreen, SwitchTurnScreen])(
       'Bia',
     ])
     await act(() =>
-      useGameRepository
-        .getState()
-        .saveGame({
-          ...game,
-          players: game.players.map(player => ({
-            ...player,
-            score: player.id === 'a' ? 5 : player.score,
-          })),
-        }),
+      useGameRepository.getState().saveGame({
+        ...game,
+        players: game.players.map(player => ({
+          ...player,
+          score: player.id === 'a' ? 5 : player.score,
+        })),
+      }),
     )
     expect(header.findAllByType(PlayerScore)[0].props.children).toBe(
       'Ana — 5 pontos',
     )
-    await act(() => header.findAllByType(PixelButton)[1].props.onPress())
+    await act(() =>
+      header
+        .findAllByType(PixelButton)
+        .find(button => button.props.accessibilityLabel === 'Fechar')!
+        .props.onPress(),
+    )
     expect(header.findByType(Modal).props.visible).toBe(false)
     expect(replace).not.toHaveBeenCalled()
+
+    const openEndDialog = () =>
+      header
+        .findAllByType(PixelButton)
+        .find(button => button.props.accessibilityLabel === 'Encerrar jogo')!
+        .props.onPress()
+    const currentGame = useGameRepository.getState().currentGame
+    await act(openEndDialog)
+    expect(header.findByType(Modal).props.visible).toBe(true)
+    expect(useGameRepository.getState().currentGame).toBe(currentGame)
+    await act(() =>
+      header
+        .findAllByType(PixelButton)
+        .find(
+          button => button.props.accessibilityLabel === 'Continuar jogando',
+        )!
+        .props.onPress(),
+    )
+    expect(header.findByType(Modal).props.visible).toBe(false)
+    expect(useGameRepository.getState().currentGame).toBe(currentGame)
+    expect(replace).not.toHaveBeenCalled()
+
+    await act(openEndDialog)
+    await act(() => header.findByType(Modal).props.onRequestClose())
+    expect(useGameRepository.getState().currentGame).toBe(currentGame)
+    await act(openEndDialog)
+    const confirm = header
+      .findAllByType(PixelButton)
+      .find(
+        button =>
+          button.props.variant === 'danger' && !button.props.accessibilityLabel,
+      )!
+    await act(() => {
+      confirm.props.onPress()
+      confirm.props.onPress()
+    })
+    expect(useGameRepository.getState().currentGame).toBeNull()
+    expect(useGameRepository.getState().history[0]).toMatchObject(currentGame!)
+    expect(replace).toHaveBeenCalledTimes(1)
+    expect(replace).toHaveBeenCalledWith('FinalScore', { gameId: 'score' })
   },
 )

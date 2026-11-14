@@ -140,7 +140,11 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
       <SafeArea>
         <ScreenScroll>
           <Content>
-            <GameScoreHeader>
+            <GameScoreHeader
+              onGameEnded={gameId =>
+                navigation.replace('FinalScore', { gameId })
+              }
+            >
               <Header $compact={compact} accessibilityRole="header">
                 {intl.formatMessage(messages.roundLabel)}{' '}
                 <Highlight>

@@ -2,7 +2,7 @@ import PixelShape from './PixelShape'
 import type { ReactNode } from 'react'
 import { Pressable, StyleSheet, View, type PressableProps } from 'react-native'
 
-type Variant = 'primary' | 'secondary' | 'neutral'
+type Variant = 'primary' | 'secondary' | 'neutral' | 'danger'
 type PixelButtonProps = Omit<PressableProps, 'children'> & {
   children: ReactNode
   variant?: Variant
@@ -12,6 +12,7 @@ const palettes = {
   primary: { face: '#e3b550', light: '#f2cf7c', shade: '#b98c36' },
   secondary: { face: '#a7c6d0', light: '#c0d9df', shade: '#7c9da7' },
   neutral: { face: '#e7d0ae', light: '#f9e7c6', shade: '#b29e81' },
+  danger: { face: '#b83232', light: '#df6262', shade: '#812020' },
 }
 export default function PixelButton({
   children,
@@ -44,7 +45,8 @@ export default function PixelButton({
               style={[
                 styles.content,
                 variant === 'primary' && styles.primary,
-                variant === 'neutral' && styles.neutral,
+                (variant === 'neutral' || variant === 'danger') &&
+                  styles.neutral,
               ]}
             >
               {children}

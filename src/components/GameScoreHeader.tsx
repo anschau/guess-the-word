@@ -7,6 +7,7 @@ import { useGameRepository } from '../repositories/gameRepository'
 import {
   DialogPanel,
   DialogTitle,
+  DialogText,
   ModalBackdrop,
 } from '../screens/MainScreen/MainScreen.styles'
 import { getTextVariantStyles, TypographyVariant } from '../theme/typography'
@@ -15,10 +16,24 @@ import GameScore from './GameScore'
 import messages from './GameScore.messages'
 import PixelButton from './PixelButton'
 
-export default function GameScoreHeader({ children }: { children: ReactNode }) {
+type Props = {
+  children: ReactNode
+  onGameEnded: (gameId: string) => void
+}
+
+export default function GameScoreHeader({ children, onGameEnded }: Props) {
   const intl = useIntl()
-  const [visible, setVisible] = useState(false)
+  const [dialog, setDialog] = useState<'score' | 'endGame' | null>(null)
   const game = useGameRepository(state => state.currentGame)
+
+  function endGame() {
+    const repository = useGameRepository.getState()
+    const currentGame = repository.currentGame
+    if (!currentGame) return
+    repository.finishGame()
+    setDialog(null)
+    onGameEnded(currentGame.id)
+  }
 
   return (
     <>
@@ -27,7 +42,7 @@ export default function GameScoreHeader({ children }: { children: ReactNode }) {
         <PixelButton
           variant="neutral"
           accessibilityLabel={intl.formatMessage(messages.open)}
-          onPress={() => setVisible(true)}
+          onPress={() => setDialog('score')}
         >
           <FontAwesome
             name="trophy"
@@ -36,23 +51,60 @@ export default function GameScoreHeader({ children }: { children: ReactNode }) {
             accessible={false}
           />
         </PixelButton>
+        <PixelButton
+          variant="danger"
+          accessibilityLabel={intl.formatMessage(messages.endGame)}
+          disabled={!game}
+          onPress={() => setDialog('endGame')}
+        >
+          <FontAwesome
+            name="times"
+            size={24}
+            color="#ffffff"
+            accessible={false}
+          />
+        </PixelButton>
       </HeaderRow>
       <Modal
         transparent
-        visible={visible}
+        visible={dialog !== null}
         animationType="fade"
-        onRequestClose={() => setVisible(false)}
+        onRequestClose={() => setDialog(null)}
       >
         <ModalBackdrop>
           <DialogPanel accessibilityViewIsModal>
             <DialogTitle accessibilityRole="header">
-              {intl.formatMessage(messages.current)}
+              {intl.formatMessage(
+                dialog === 'endGame' ? messages.endGame : messages.current,
+              )}
             </DialogTitle>
             <ScrollView>
-              <GameScore players={game?.players ?? []} />
+              {dialog === 'endGame' ? (
+                <>
+                  <DialogText>
+                    {intl.formatMessage(messages.confirmEnd)}
+                  </DialogText>
+                  <PixelButton variant="danger" onPress={endGame}>
+                    <DangerLabel>
+                      {intl.formatMessage(messages.endGame)}
+                    </DangerLabel>
+                  </PixelButton>
+                </>
+              ) : (
+                <GameScore players={game?.players ?? []} />
+              )}
             </ScrollView>
-            <CloseButton onPress={() => setVisible(false)}>
-              <CloseLabel>{intl.formatMessage(messages.close)}</CloseLabel>
+            <CloseButton
+              accessibilityLabel={intl.formatMessage(
+                dialog === 'endGame' ? messages.cancel : messages.close,
+              )}
+              onPress={() => setDialog(null)}
+            >
+              <CloseLabel>
+                {intl.formatMessage(
+                  dialog === 'endGame' ? messages.cancel : messages.close,
+                )}
+              </CloseLabel>
             </CloseButton>
           </DialogPanel>
         </ModalBackdrop>
@@ -72,3 +124,4 @@ const CloseLabel = styled.Text({
   ...getTextVariantStyles(TypographyVariant.BUTTON),
   color: '#213b45',
 })
+const DangerLabel = styled(CloseLabel)({ color: '#ffffff' })
