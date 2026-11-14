@@ -1,9 +1,8 @@
-import { useState } from 'react'
 import { useNavigation } from '@react-navigation/native'
 import type { StackNavigationProp } from '@react-navigation/stack'
 import type { MainStackParamList } from '../../navigation/MainStack'
 import { useIntl } from 'react-intl'
-import { Modal, ScrollView, StatusBar } from 'react-native'
+import { StatusBar } from 'react-native'
 import { useCompact } from '../../config/config'
 import PixelButton from '../../components/PixelButton'
 import messages from './messages'
@@ -19,10 +18,6 @@ import {
   PaperBottom,
   AboutText,
   Footer,
-  ModalBackdrop,
-  DialogPanel,
-  DialogTitle,
-  DialogText,
   ScreenScroll,
   Tagline,
   FooterText,
@@ -30,15 +25,6 @@ import {
   AboutButton,
   ButtonLabel,
 } from './MainScreen.styles'
-
-type Dialog = 'about'
-
-const dialogs = {
-  about: {
-    title: messages.aboutTitle,
-    text: messages.aboutText,
-  },
-}
 
 function MenuButton({
   label,
@@ -60,7 +46,6 @@ export default function MainScreen() {
   const navigation =
     useNavigation<StackNavigationProp<MainStackParamList, 'Main'>>()
   const intl = useIntl()
-  const [dialog, setDialog] = useState<Dialog | null>(null)
   const compact = useCompact()
 
   return (
@@ -100,7 +85,7 @@ export default function MainScreen() {
               />
               <AboutButton
                 accessibilityRole="button"
-                onPress={() => setDialog('about')}
+                onPress={() => navigation.navigate('About')}
               >
                 <AboutText>{intl.formatMessage(messages.about)}</AboutText>
               </AboutButton>
@@ -115,29 +100,6 @@ export default function MainScreen() {
           </Content>
         </ScreenScroll>
       </SafeArea>
-      <Modal
-        transparent
-        visible={dialog !== null}
-        animationType="fade"
-        onRequestClose={() => setDialog(null)}
-      >
-        <ModalBackdrop>
-          <DialogPanel accessibilityViewIsModal>
-            <ScrollView>
-              <DialogTitle accessibilityRole="header">
-                {dialog && intl.formatMessage(dialogs[dialog].title)}
-              </DialogTitle>
-              <DialogText>
-                {dialog && intl.formatMessage(dialogs[dialog].text)}
-              </DialogText>
-              <MenuButton
-                label={intl.formatMessage(messages.back)}
-                onPress={() => setDialog(null)}
-              />
-            </ScrollView>
-          </DialogPanel>
-        </ModalBackdrop>
-      </Modal>
     </>
   )
 }
