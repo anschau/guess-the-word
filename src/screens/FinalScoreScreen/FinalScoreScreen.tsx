@@ -65,11 +65,9 @@ export default function FinalScoreScreen({ route, navigation }: Props) {
       routes: [
         { name: 'Main' },
         {
-          name: 'SwitchTurn',
+          name: 'SelectGameType',
           params: {
             playerName: game.players[0].name,
-            round: 1,
-            totalRounds: game.totalRounds,
           },
         },
       ],

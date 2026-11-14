@@ -81,8 +81,7 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
     : []
   const clue = clues[clueIndex]
   const points = 3 - clueIndex
-  console.log('clueIndex', clueIndex)
-  console.log('points', points)
+
   function goHome() {
     navigation.popToTop()
   }

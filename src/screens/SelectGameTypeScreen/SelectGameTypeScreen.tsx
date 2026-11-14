@@ -32,7 +32,7 @@ import {
 } from './SelectGameTypeScreen.styles'
 import messages from './messages'
 
-const rounds = 3
+const rounds = 1
 
 type SelectGameTypeScreenProps = StackScreenProps<
   MainStackParamList,
