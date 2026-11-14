@@ -2,6 +2,7 @@ import { useRef, useState } from 'react'
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
 import { Modal, ScrollView, StatusBar } from 'react-native'
+import GameScoreHeader from '../../components/GameScoreHeader'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import type { MainStackParamList } from '../../navigation/MainStack'
@@ -139,15 +140,17 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
       <SafeArea>
         <ScreenScroll>
           <Content>
-            <Header $compact={compact} accessibilityRole="header">
-              {intl.formatMessage(messages.roundLabel)}{' '}
-              <Highlight>
-                {intl.formatMessage(messages.round, { round, totalRounds })}
-              </Highlight>
-              {' · '}
-              {intl.formatMessage(messages.turn)}{' '}
-              <Highlight>{playerName}</Highlight>
-            </Header>
+            <GameScoreHeader>
+              <Header $compact={compact} accessibilityRole="header">
+                {intl.formatMessage(messages.roundLabel)}{' '}
+                <Highlight>
+                  {intl.formatMessage(messages.round, { round, totalRounds })}
+                </Highlight>
+                {' · '}
+                {intl.formatMessage(messages.turn)}{' '}
+                <Highlight>{playerName}</Highlight>
+              </Header>
+            </GameScoreHeader>
             <Panel>
               <PaperTop />
               <PaperBottom />

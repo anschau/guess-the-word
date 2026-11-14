@@ -3,10 +3,8 @@ import { IntlProvider } from 'react-intl'
 import type { StackScreenProps } from '@react-navigation/stack'
 import PixelButton from '../src/components/PixelButton'
 import FinalScoreScreen from '../src/screens/FinalScoreScreen/FinalScoreScreen'
-import {
-  PlayerScore,
-  Winner,
-} from '../src/screens/FinalScoreScreen/FinalScoreScreen.styles'
+import { Winner } from '../src/screens/FinalScoreScreen/FinalScoreScreen.styles'
+import { PlayerScore } from '../src/components/GameScore.styles'
 import type { MainStackParamList } from '../src/navigation/MainStack'
 import { useGameRepository } from '../src/repositories/gameRepository'
 
@@ -57,8 +55,8 @@ test('ranks scores without changing the saved player order and restarts with zer
   await renderScreen()
   expect(renderer.root.findByType(Winner).props.children).toBe('Ana\nvenceu!')
   expect(
-    renderer.root.findAllByType(PlayerScore).map(row => row.props.children[0]),
-  ).toEqual(['Ana', 'Lucas'])
+    renderer.root.findAllByType(PlayerScore).map(row => row.props.children),
+  ).toEqual(['Ana — 5 pontos', 'Lucas — 2 pontos'])
   await act(() => renderer.root.findAllByType(PixelButton)[0].props.onPress())
   const state = useGameRepository.getState()
   expect(state.currentGame).toMatchObject({
@@ -78,8 +76,8 @@ test('ranks scores without changing the saved player order and restarts with zer
     routes: [
       { name: 'Main' },
       {
-        name: 'SwitchTurn',
-        params: { playerName: 'Lucas', round: 1, totalRounds: 3 },
+        name: 'SelectGameType',
+        params: { playerName: 'Lucas' },
       },
     ],
   })

@@ -1,6 +1,7 @@
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
 import { StatusBar } from 'react-native'
+import GameScoreHeader from '../../components/GameScoreHeader'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import type { MainStackParamList } from '../../navigation/MainStack'
@@ -53,12 +54,14 @@ export default function SwitchTurnScreen({
       <SafeArea>
         <ScreenScroll>
           <Content>
-            <RoundLabel $compact={compact}>
-              {intl.formatMessage(messages.roundLabel)}{' '}
-              <RoundValue $compact={compact}>
-                {intl.formatMessage(messages.round, { round, totalRounds })}
-              </RoundValue>
-            </RoundLabel>
+            <GameScoreHeader>
+              <RoundLabel $compact={compact}>
+                {intl.formatMessage(messages.roundLabel)}{' '}
+                <RoundValue $compact={compact}>
+                  {intl.formatMessage(messages.round, { round, totalRounds })}
+                </RoundValue>
+              </RoundLabel>
+            </GameScoreHeader>
             <Panel>
               <PaperTop />
               <PaperBottom />

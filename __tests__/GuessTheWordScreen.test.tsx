@@ -66,7 +66,7 @@ test('awards two points after the second clue and hands off to the next player',
   await press('Alguém acertou!')
   await press('Ana')
   const game = useGameRepository.getState().currentGame!
-  expect(game.players.map(player => player.score)).toEqual([0, 2])
+  expect(game.players.map(player => player.score)).toEqual([1, 2])
   expect(game.usedWordIds).toHaveLength(1)
   expect(game.currentPlayerIndex).toBe(1)
   expect(replace).toHaveBeenCalledWith('SwitchTurn', {

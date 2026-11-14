@@ -25,16 +25,15 @@ export const Content = styled.View({
 export const RoundLabel = styled.Text<{ $compact: boolean }>(
   ({ $compact }) => ({
     fontFamily: fonts.title,
-    fontSize: $compact ? 30 : 36,
+    fontSize: $compact ? 28 : 34,
     color: '#f9e7c6',
-    textAlign: 'center',
     textShadow: '2px 3px 0px #28180e',
   }),
 )
 
 export const RoundValue = styled.Text<{ $compact: boolean }>(
   ({ $compact }) => ({
-    fontSize: $compact ? 42 : 50,
+    fontSize: $compact ? 38 : 46,
     color: '#ffc531',
   }),
 )

@@ -47,29 +47,6 @@ export const Body = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   textAlign: 'center',
 }))
 export const Divider = styled.View({ height: 2, backgroundColor: '#896447' })
-export const Ranking = styled.View({ gap: 14 })
-export const RankingTitle = styled.Text<{ $compact: boolean }>(
-  ({ $compact }) => ({
-    ...getTextVariantStyles(TypographyVariant.BUTTON),
-    fontSize: $compact ? 28 : 34,
-    marginBottom: 4,
-  }),
-)
-export const ScoreRow = styled.View({
-  flexDirection: 'row',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: 10,
-})
-export const Position = styled.Text({
-  ...getTextVariantStyles(TypographyVariant.BUTTON),
-  minWidth: 36,
-})
-export const PlayerScore = styled.Text<{ $compact: boolean }>(
-  ({ $compact }) => ({
-    ...getTextVariantStyles(TypographyVariant.H5, $compact),
-  }),
-)
 export const Actions = styled.View({ gap: 14 })
 export const ButtonLabel = styled.Text<{
   $compact: boolean

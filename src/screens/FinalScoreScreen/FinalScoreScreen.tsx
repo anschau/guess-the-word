@@ -2,6 +2,7 @@ import { useRef } from 'react'
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
 import { StatusBar } from 'react-native'
+import GameScore from '../../components/GameScore'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import type { MainStackParamList } from '../../navigation/MainStack'
@@ -22,11 +23,6 @@ import {
   Content,
   Divider,
   Panel,
-  PlayerScore,
-  Position,
-  Ranking,
-  RankingTitle,
-  ScoreRow,
   ScreenScroll,
   Title,
   Trophy,
@@ -119,26 +115,10 @@ export default function FinalScoreScreen({ route, navigation }: Props) {
                     )}
                   </Celebration>
                   <Divider />
-                  <Ranking>
-                    <RankingTitle $compact={compact} accessibilityRole="header">
-                      {intl.formatMessage(messages.ranking)}
-                    </RankingTitle>
-                    {players.map(player => (
-                      <ScoreRow key={player.id}>
-                        <Position>
-                          {players.findIndex(
-                            item => item.score === player.score,
-                          ) + 1}
-                          º
-                        </Position>
-                        <PlayerScore $compact={compact}>
-                          {`${player.name} — ${player.score === 1 ? intl.formatMessage(messages.scoreOnePoint) : intl.formatMessage(messages.scorePoints, {
-                            points: player.score,
-                          })}`}
-                        </PlayerScore>
-                      </ScoreRow>
-                    ))}
-                  </Ranking>
+                  <GameScore
+                    players={players}
+                    title={intl.formatMessage(messages.ranking)}
+                  />
                   <Divider />
                 </>
               ) : (

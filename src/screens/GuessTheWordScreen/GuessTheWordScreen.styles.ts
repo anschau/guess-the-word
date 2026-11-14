@@ -19,8 +19,7 @@ export const ScreenScroll = styled.ScrollView.attrs({
 export const Content = styled.View({ width: '100%', maxWidth: 460, gap: 24 })
 export const Header = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   fontFamily: fonts.title,
-  fontSize: $compact ? 23 : 28,
-  textAlign: 'center',
+  fontSize: $compact ? 21 : 26,
   color: '#f9e7c6',
   textShadow: '2px 3px 0px #28180e',
 }))
