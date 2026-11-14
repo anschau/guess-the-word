@@ -62,7 +62,7 @@ async function press(label: string) {
 
 test('awards two points after the second clue and hands off to the next player', async () => {
   await renderScreen()
-  await press('Ninguém acertou ·\nPróxima dica')
+  await press('Ninguém acertou')
   await press('Alguém acertou!')
   await press('Ana')
   const game = useGameRepository.getState().currentGame!
@@ -78,9 +78,9 @@ test('awards two points after the second clue and hands off to the next player',
 
 test('ends the turn without points after the third missed clue', async () => {
   await renderScreen()
-  await press('Ninguém acertou ·\nPróxima dica')
-  await press('Ninguém acertou ·\nPróxima dica')
-  await press('Ninguém acertou ·\nEncerrar vez')
+  await press('Ninguém acertou')
+  await press('Ninguém acertou')
+  await press('Ninguém acertou')
   expect(
     useGameRepository
       .getState()
@@ -99,7 +99,5 @@ test('finishes the last round and saves the final score', async () => {
   await press('Lucas')
   expect(useGameRepository.getState().currentGame).toBeNull()
   expect(useGameRepository.getState().history[0].players[0].score).toBe(3)
-  expect(replace).not.toHaveBeenCalled()
-  await press('Voltar ao início')
-  expect(popToTop).toHaveBeenCalledTimes(1)
+  expect(replace).toHaveBeenCalledWith('FinalScore', { gameId: game.id })
 })

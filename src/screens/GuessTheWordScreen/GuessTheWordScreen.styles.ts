@@ -44,7 +44,7 @@ export const SecretWord = styled.Text<{ $compact: boolean }>(
   ({ $compact }) => ({
     ...getTextVariantStyles(TypographyVariant.BUTTON),
     fontSize: $compact ? 32 : 40,
-    color: '#092e49',
+    color: '#9b0000',
   }),
 )
 export const ClueLabel = styled.Text<{ $compact: boolean }>(() => ({
@@ -53,8 +53,9 @@ export const ClueLabel = styled.Text<{ $compact: boolean }>(() => ({
 export const ClueTitle = styled.Text<{ $compact: boolean }>(() => ({
   ...getTextVariantStyles(TypographyVariant.H2),
   textAlign: 'center',
+  color: '#9b0000',
 }))
-export const ClueText = styled(Body)({ color: '#092e49', fontSize: 30 })
+export const ClueText = styled(Body)({ color: '#a58151', fontSize: 30 })
 export const Divider = styled.View({
   height: 2,
   backgroundColor: '#97775a',

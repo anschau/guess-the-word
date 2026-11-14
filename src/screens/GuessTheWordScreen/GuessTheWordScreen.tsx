@@ -18,7 +18,6 @@ import {
   ModalBackdrop,
   DialogPanel,
   DialogTitle,
-  DialogText,
 } from '../MainScreen/MainScreen.styles'
 import {
   Actions,
@@ -50,7 +49,6 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
   const game = useGameRepository(state => state.currentGame)
   const [clueIndex, setClueIndex] = useState(0)
   const [choosingWinner, setChoosingWinner] = useState(false)
-  const [results, setResults] = useState<string | null>(null)
   const completed = useRef(false)
   const [word] = useState(() => {
     const difficulty =
@@ -83,7 +81,8 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
     : []
   const clue = clues[clueIndex]
   const points = 3 - clueIndex
-
+  console.log('clueIndex', clueIndex)
+  console.log('points', points)
   function goHome() {
     navigation.popToTop()
   }
@@ -111,12 +110,7 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
     if (nextRound > game.totalRounds) {
       repository.saveGame(updated)
       repository.finishGame()
-      setResults(
-        [...players]
-          .sort((a, b) => b.score - a.score)
-          .map(player => `${player.name}: ${player.score}`)
-          .join('\n'),
-      )
+      navigation.replace('FinalScore', { gameId: game.id })
       return
     }
     repository.saveGame({
@@ -181,7 +175,9 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
                   </Section>
                   <Divider />
                   <Body $compact={compact}>
-                    {points === 1 ? intl.formatMessage(messages.points, { points }) : intl.formatMessage(messages.onePoint)}
+                    {points === 1
+                      ? intl.formatMessage(messages.onePoint)
+                      : intl.formatMessage(messages.points, { points })}
                   </Body>
                   <Actions>
                     <PixelButton
@@ -221,54 +217,40 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
               )}
             </Panel>
             <Footer $compact={compact}>
-              {intl.formatMessage(clueIndex < 3 ? messages.footer : messages.footerEnd)}
+              {clueIndex < 2
+                ? intl.formatMessage(messages.footer)
+                : intl.formatMessage(messages.footerEnd)}
             </Footer>
           </Content>
         </ScreenScroll>
       </SafeArea>
       <Modal
         transparent
-        visible={choosingWinner || results !== null}
+        visible={choosingWinner}
         animationType="fade"
-        onRequestClose={() =>
-          results !== null ? goHome() : setChoosingWinner(false)
-        }
+        onRequestClose={() => setChoosingWinner(false)}
       >
         <ModalBackdrop>
           <DialogPanel accessibilityViewIsModal>
-            <DialogTitle>
-              {intl.formatMessage(
-                results !== null ? messages.finished : messages.winner,
-              )}
-            </DialogTitle>
+            <DialogTitle>{intl.formatMessage(messages.winner)}</DialogTitle>
             <ScrollView>
               <Actions>
-                {results !== null ? (
-                  <DialogText>{results}</DialogText>
-                ) : (
-                  game?.players
-                    .filter((_, index) => index !== game.currentPlayerIndex)
-                    .map(player => (
-                      <PixelButton
-                        key={player.id}
-                        variant="primary"
-                        onPress={() => finishTurn(player.id)}
-                      >
-                        <ButtonLabel $compact={compact}>
-                          {player.name}
-                        </ButtonLabel>
-                      </PixelButton>
-                    ))
-                )}
-                <PixelButton
-                  onPress={() =>
-                    results !== null ? goHome() : setChoosingWinner(false)
-                  }
-                >
+                {game?.players
+                  .filter((_, index) => index !== game.currentPlayerIndex)
+                  .map(player => (
+                    <PixelButton
+                      key={player.id}
+                      variant="primary"
+                      onPress={() => finishTurn(player.id)}
+                    >
+                      <ButtonLabel $compact={compact}>
+                        {player.name}
+                      </ButtonLabel>
+                    </PixelButton>
+                  ))}
+                <PixelButton onPress={() => setChoosingWinner(false)}>
                   <SecondaryLabel $compact={compact}>
-                    {intl.formatMessage(
-                      results !== null ? messages.home : messages.cancel,
-                    )}
+                    {intl.formatMessage(messages.cancel)}
                   </SecondaryLabel>
                 </PixelButton>
               </Actions>

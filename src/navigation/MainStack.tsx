@@ -5,6 +5,7 @@ import SelectPlayersScreen from '../screens/SelectPlayersScreen/SelectPlayersScr
 import SelectGameTypeScreen from '../screens/SelectGameTypeScreen/SelectGameTypeScreen'
 import SwitchTurnScreen from '../screens/SwitchTurnScreen/SwitchTurnScreen'
 import GuessTheWordScreen from '../screens/GuessTheWordScreen/GuessTheWordScreen'
+import FinalScoreScreen from '../screens/FinalScoreScreen/FinalScoreScreen'
 
 export type MainStackParamList = {
   Main: undefined
@@ -12,6 +13,7 @@ export type MainStackParamList = {
   SelectGameType: undefined
   SwitchTurn: { playerName: string; round: number; totalRounds: number }
   GuessTheWord: { playerName: string; round: number; totalRounds: number }
+  FinalScore: { gameId: string }
 }
 
 const Stack = createStackNavigator<MainStackParamList>()
@@ -28,6 +30,7 @@ export default function MainStack() {
         <Stack.Screen name="SelectGameType" component={SelectGameTypeScreen} />
         <Stack.Screen name="SwitchTurn" component={SwitchTurnScreen} />
         <Stack.Screen name="GuessTheWord" component={GuessTheWordScreen} />
+        <Stack.Screen name="FinalScore" component={FinalScoreScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   )

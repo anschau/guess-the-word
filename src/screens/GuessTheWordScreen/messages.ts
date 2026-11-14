@@ -51,11 +51,11 @@ export default defineMessages<MessageValues>({
   correct: { id: `${screenId}.correct`, defaultMessage: 'Alguém acertou!' },
   nextClue: {
     id: `${screenId}.nextClue`,
-    defaultMessage: 'Ninguém acertou ·\nPróxima dica',
+    defaultMessage: 'Ninguém acertou',
   },
   endTurn: {
     id: `${screenId}.endTurn`,
-    defaultMessage: 'Ninguém acertou ·\nEncerrar vez',
+    defaultMessage: 'Ninguém acertou',
   },
   footer: {
     id: `${screenId}.footer`,
