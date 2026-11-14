@@ -94,9 +94,12 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
       goHome()
       return
     }
-    const players = game.players.map(player => ({
+    const players = game.players.map((player, index) => ({
       ...player,
-      score: player.score + (player.id === winnerId ? points : 0),
+      score:
+        player.score +
+        (player.id === winnerId ? points : 0) +
+        (winnerId && index === game.currentPlayerIndex ? 1 : 0),
     }))
     const nextIndex = (game.currentPlayerIndex + 1) % players.length
     const nextRound = game.round + (nextIndex === 0 ? 1 : 0)
