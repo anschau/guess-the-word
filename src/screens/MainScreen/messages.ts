@@ -19,13 +19,18 @@ export default defineMessages({
     id: `${screenId}.instructions`,
     defaultMessage: 'Instruções',
   },
+  config: {
+    id: `${screenId}.config`,
+    defaultMessage: 'Configurações',
+  },
   about: {
     id: `${screenId}.about`,
     defaultMessage: 'Sobre',
   },
   footer: {
     id: `${screenId}.footer`,
-    defaultMessage: 'Um celular, amigos\nreunidos e inglês\nna ponta da língua.',
+    defaultMessage:
+      'Um celular, amigos\nreunidos e inglês\nna ponta da língua.',
   },
   back: {
     id: `${screenId}.back`,

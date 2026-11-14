@@ -43,13 +43,16 @@ type SelectPlayersScreenProps = StackScreenProps<
 
 export default function SelectPlayersScreen({
   navigation,
+  route,
 }: SelectPlayersScreenProps) {
   const intl = useIntl()
   const compact = useCompact()
+  const isConfig = route.params?.mode === 'config'
+  const actionMessage = isConfig ? messages.save : messages.next
   const savePlayers = usePlayersRepository(state => state.setPlayers)
   const savedPlayers = usePlayersRepository(state => state.players)
   const [players, setPlayers] = useState(() =>
-    savedPlayers.length > 0 ? [...savedPlayers] : ['Lucas 1', 'Lucas 2', ''],
+    savedPlayers.length > 0 ? [...savedPlayers] : ['', '', ''],
   )
   const [submitted, setSubmitted] = useState(false)
   const filledPlayers = players
@@ -62,7 +65,11 @@ export default function SelectPlayersScreen({
     if (!hasEnoughPlayers) return
 
     savePlayers(filledPlayers)
-    navigation.navigate('SelectGameType')
+    if (isConfig) {
+      navigation.goBack()
+    } else {
+      navigation.navigate('SelectGameType')
+    }
   }
 
   return (
@@ -97,7 +104,9 @@ export default function SelectPlayersScreen({
               </BackButton>
               <Header>
                 <Title $compact={compact} accessibilityRole="header">
-                  {intl.formatMessage(messages.title)}
+                  {intl.formatMessage(
+                    isConfig ? messages.defaultPlayers : messages.title,
+                  )}
                 </Title>
                 <Subtitle $compact={compact}>
                   {intl.formatMessage(messages.subtitle)}
@@ -156,15 +165,15 @@ export default function SelectPlayersScreen({
                 </PixelButton>
                 <PixelButton
                   variant="primary"
-                  accessibilityLabel={intl.formatMessage(messages.next)}
+                  accessibilityLabel={intl.formatMessage(actionMessage)}
                   onPress={handleContinue}
                 >
                   <ButtonContent>
                     <ButtonLabel $primary>
-                      {intl.formatMessage(messages.next)}
+                      {intl.formatMessage(actionMessage)}
                     </ButtonLabel>
                     <FontAwesome
-                      name="arrow-right"
+                      name={isConfig ? 'check' : 'arrow-right'}
                       size={28}
                       color="#412704"
                       accessible={false}

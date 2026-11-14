@@ -77,7 +77,13 @@ export default function MainScreen() {
               <MenuButton
                 label={intl.formatMessage(messages.play)}
                 primary
-                onPress={() => navigation.navigate('SelectPlayers')}
+                onPress={() =>
+                  navigation.navigate('SelectPlayers', { mode: 'game' })
+                }
+              />
+              <MenuButton
+                label={intl.formatMessage(messages.config)}
+                onPress={() => navigation.navigate('Config')}
               />
               <MenuButton
                 label={intl.formatMessage(messages.instructions)}

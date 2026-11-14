@@ -9,6 +9,8 @@ type MessageValues = {
   | 'subtitle'
   | 'add'
   | 'next'
+  | 'save'
+  | 'defaultPlayers'
   | 'required'
   | 'comingSoonTitle'
   | 'comingSoonText',
@@ -36,6 +38,11 @@ export default defineMessages<MessageValues>({
     defaultMessage: 'Adicionar participante',
   },
   next: { id: `${screenId}.next`, defaultMessage: 'Avançar' },
+  save: { id: `${screenId}.save`, defaultMessage: 'Salvar' },
+  defaultPlayers: {
+    id: `${screenId}.defaultPlayers`,
+    defaultMessage: 'Jogadores Padrão',
+  },
   required: {
     id: `${screenId}.required`,
     defaultMessage:
