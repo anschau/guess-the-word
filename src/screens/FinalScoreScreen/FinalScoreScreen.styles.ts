@@ -1,5 +1,6 @@
 import styled from 'styled-components/native'
 import { Menu } from '../MainScreen/MainScreen.styles'
+import { theme } from '../../theme/theme'
 import {
   fonts,
   getTextVariantStyles,
@@ -31,6 +32,17 @@ export const Panel = styled(Menu)({
   gap: 22,
 })
 export const Celebration = styled.View({ alignItems: 'center', gap: 12 })
+export const ResultCard = styled.View({
+  backgroundColor: theme.colors.background,
+  padding: 12,
+  gap: 22,
+})
+export const Brand = styled.Text({
+  fontFamily: fonts.title,
+  fontSize: 32,
+  color: '#092e49',
+  textAlign: 'center',
+})
 export const Trophy = styled.Image<{ $compact: boolean }>(({ $compact }) => ({
   width: $compact ? 200 : 240,
   maxWidth: '100%',
@@ -41,6 +53,7 @@ export const Winner = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   ...getTextVariantStyles(TypographyVariant.BUTTON),
   fontSize: $compact ? 34 : 42,
   color: '#092e49',
+  textAlign: 'center',
 }))
 export const Body = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   ...getTextVariantStyles(TypographyVariant.H5, $compact),
@@ -55,4 +68,5 @@ export const ButtonLabel = styled.Text<{
   ...getTextVariantStyles(TypographyVariant.BUTTON),
   fontSize: $compact ? 27 : 33,
   color: $primary ? '#412704' : '#213b45',
+  textAlign: 'center',
 }))

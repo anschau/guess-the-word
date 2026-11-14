@@ -11,6 +11,11 @@ type MessageValues = {
   | 'translation'
   | 'ranking'
   | 'playAgain'
+  | 'brand'
+  | 'share'
+  | 'sharing'
+  | 'shareErrorTitle'
+  | 'shareError'
   | 'menu'
   | 'scoreOnePoint'
   | 'empty',
@@ -41,6 +46,17 @@ export default defineMessages<MessageValues>({
     defaultMessage: '1 ponto',
   },
   playAgain: { id: `${screenId}.playAgain`, defaultMessage: 'Jogar novamente' },
+  brand: { id: `${screenId}.brand`, defaultMessage: 'Guess the Word' },
+  share: { id: `${screenId}.share`, defaultMessage: 'Compartilhar Resultado' },
+  sharing: { id: `${screenId}.sharing`, defaultMessage: 'Compartilhando...' },
+  shareErrorTitle: {
+    id: `${screenId}.shareErrorTitle`,
+    defaultMessage: 'Não foi possível compartilhar',
+  },
+  shareError: {
+    id: `${screenId}.shareError`,
+    defaultMessage: 'Tente compartilhar o resultado novamente.',
+  },
   menu: { id: `${screenId}.menu`, defaultMessage: 'Voltar ao menu' },
   empty: {
     id: `${screenId}.empty`,

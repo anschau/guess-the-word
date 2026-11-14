@@ -1,7 +1,9 @@
-import { useRef } from 'react'
+import { useRef, useState, type ComponentRef } from 'react'
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
-import { StatusBar } from 'react-native'
+import { Alert, StatusBar, type View } from 'react-native'
+import Share from 'react-native-share'
+import { captureRef } from 'react-native-view-shot'
 import GameScore from '../../components/GameScore'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
@@ -27,6 +29,8 @@ import {
   Title,
   Trophy,
   Winner,
+  ResultCard,
+  Brand,
 } from './FinalScoreScreen.styles'
 import messages from './messages'
 
@@ -36,11 +40,43 @@ export default function FinalScoreScreen({ route, navigation }: Props) {
   const intl = useIntl()
   const compact = useCompact()
   const restarting = useRef(false)
+  const resultRef = useRef<ComponentRef<typeof View>>(null)
+  const sharingRef = useRef(false)
+  const [sharing, setSharing] = useState(false)
+  const [imageReady, setImageReady] = useState(false)
   const game = useGameRepository(state =>
     state.history.find(item => item.id === route.params.gameId),
   )
   const players = [...(game?.players ?? [])].sort((a, b) => b.score - a.score)
   const tied = players.length > 1 && players[0].score === players[1].score
+
+  async function shareResult() {
+    if (!players.length || !imageReady || sharingRef.current) return
+    sharingRef.current = true
+    setSharing(true)
+    try {
+      const uri = await captureRef(resultRef, {
+        format: 'png',
+        result: 'tmpfile',
+      })
+      // Keep the temporary file available while the receiving app reads it.
+      // View-shot removes its temporary captures when the app session ends.
+      await Share.open({
+        url: uri.startsWith('file://') ? uri : `file://${uri}`,
+        type: 'image/png',
+        title: intl.formatMessage(messages.share),
+        failOnCancel: false,
+      })
+    } catch {
+      Alert.alert(
+        intl.formatMessage(messages.shareErrorTitle),
+        intl.formatMessage(messages.shareError),
+      )
+    } finally {
+      sharingRef.current = false
+      setSharing(false)
+    }
+  }
 
   function playAgain() {
     if (!game || !game.players.length || restarting.current) return
@@ -91,13 +127,15 @@ export default function FinalScoreScreen({ route, navigation }: Props) {
               <Rivet $side="left" />
               <Rivet $side="right" />
               {players.length ? (
-                <>
+                <ResultCard ref={resultRef} collapsable={false}>
+                  <Brand>{intl.formatMessage(messages.brand)}</Brand>
                   <Celebration>
                     <Trophy
                       source={require('../../../assets/images/trophy.png')}
                       $compact={compact}
                       resizeMode="contain"
                       accessible={false}
+                      onLoad={() => setImageReady(true)}
                     />
                     <Winner $compact={compact}>
                       {tied
@@ -119,8 +157,7 @@ export default function FinalScoreScreen({ route, navigation }: Props) {
                     players={players}
                     title={intl.formatMessage(messages.ranking)}
                   />
-                  <Divider />
-                </>
+                </ResultCard>
               ) : (
                 <Body $compact={compact}>
                   {intl.formatMessage(messages.empty)}
@@ -131,6 +168,20 @@ export default function FinalScoreScreen({ route, navigation }: Props) {
                   <PixelButton variant="primary" onPress={playAgain}>
                     <ButtonLabel $compact={compact} $primary>
                       {intl.formatMessage(messages.playAgain)}
+                    </ButtonLabel>
+                  </PixelButton>
+                )}
+                {!!players.length && (
+                  <PixelButton
+                    testID="share-result"
+                    onPress={shareResult}
+                    disabled={sharing || !imageReady}
+                    accessibilityState={{ busy: sharing }}
+                  >
+                    <ButtonLabel $compact={compact}>
+                      {intl.formatMessage(
+                        sharing ? messages.sharing : messages.share,
+                      )}
                     </ButtonLabel>
                   </PixelButton>
                 )}
