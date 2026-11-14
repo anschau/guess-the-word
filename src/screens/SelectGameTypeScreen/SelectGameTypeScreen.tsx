@@ -6,6 +6,7 @@ import type { MainStackParamList } from '../../navigation/MainStack'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import { usePlayersRepository } from '../../repositories/playersRepository'
+import { useSettingsRepository } from '../../repositories/settingsRepository'
 import { useGameTypeRepository } from '../../repositories/gameTypeRepository'
 import { useGameRepository } from '../../repositories/gameRepository'
 import { gameTypes } from '../../models/GameType'
@@ -32,8 +33,6 @@ import {
 } from './SelectGameTypeScreen.styles'
 import messages from './messages'
 
-const rounds = 1
-
 type SelectGameTypeScreenProps = StackScreenProps<
   MainStackParamList,
   'SelectGameType'
@@ -45,6 +44,7 @@ export default function SelectGameTypeScreen({
   const intl = useIntl()
   const compact = useCompact()
   const players = usePlayersRepository(state => state.players)
+  const rounds = useSettingsRepository(state => state.rounds)
   const selectedType = useGameTypeRepository(state => state.gameType)
   const setSelectedType = useGameTypeRepository(state => state.setGameType)
 
