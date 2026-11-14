@@ -1,5 +1,4 @@
 import { useRef } from 'react'
-import { FontAwesome } from '@react-native-vector-icons/fontawesome/static'
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
 import { StatusBar } from 'react-native'
@@ -30,6 +29,7 @@ import {
   ScoreRow,
   ScreenScroll,
   Title,
+  Trophy,
   Winner,
 } from './FinalScoreScreen.styles'
 import messages from './messages'
@@ -99,10 +99,10 @@ export default function FinalScoreScreen({ route, navigation }: Props) {
               {players.length ? (
                 <>
                   <Celebration>
-                    <FontAwesome
-                      name="trophy"
-                      size={compact ? 80 : 96}
-                      color="#d99a13"
+                    <Trophy
+                      source={require('../../../assets/images/trophy.png')}
+                      $compact={compact}
+                      resizeMode="contain"
                       accessible={false}
                     />
                     <Winner $compact={compact}>

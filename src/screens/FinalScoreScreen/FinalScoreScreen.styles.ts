@@ -31,6 +31,12 @@ export const Panel = styled(Menu)({
   gap: 22,
 })
 export const Celebration = styled.View({ alignItems: 'center', gap: 12 })
+export const Trophy = styled.Image<{ $compact: boolean }>(({ $compact }) => ({
+  width: $compact ? 200 : 240,
+  maxWidth: '100%',
+  height: 'auto',
+  aspectRatio: 2,
+}))
 export const Winner = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   ...getTextVariantStyles(TypographyVariant.BUTTON),
   fontSize: $compact ? 34 : 42,
