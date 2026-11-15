@@ -1,15 +1,16 @@
+import {
+  DialogPanel,
+  DialogTitle,
+  DialogText,
+  ModalBackdrop,
+} from './Dialog.styles'
 import { useState, type ReactNode } from 'react'
 import { FontAwesome } from '@react-native-vector-icons/fontawesome/static'
 import { Modal, ScrollView } from 'react-native'
 import { useIntl } from 'react-intl'
 import styled from 'styled-components/native'
 import { useGameRepository } from '../repositories/gameRepository'
-import {
-  DialogPanel,
-  DialogTitle,
-  DialogText,
-  ModalBackdrop,
-} from '../screens/MainScreen/MainScreen.styles'
+
 import { getTextVariantStyles, TypographyVariant } from '../theme/typography'
 import { theme } from '../theme/theme'
 import GameScore from './GameScore'

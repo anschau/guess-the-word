@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { Panel as InstructionPanel } from '../InstructionScreen/InstructionScreen.styles'
+import { Panel as InstructionPanel } from '../../components/InfoScreen.styles'
 import { getTextVariantStyles, TypographyVariant } from '../../theme/typography'
 
 export const Panel = styled(InstructionPanel)({ gap: 24 })
@@ -22,9 +22,11 @@ export const Author = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   textAlign: 'center',
 }))
 
-export const GitHubLabel = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
-  ...getTextVariantStyles(TypographyVariant.BUTTON),
-  fontSize: $compact ? 23 : 27,
-  color: '#412704',
-  flexShrink: 1,
-}))
+export const GitHubLabel = styled.Text<{ $compact: boolean }>(
+  ({ $compact }) => ({
+    ...getTextVariantStyles(TypographyVariant.BUTTON),
+    fontSize: $compact ? 23 : 27,
+    color: '#412704',
+    flexShrink: 1,
+  }),
+)

@@ -1,6 +1,6 @@
+import ScreenLayout from '../../components/ScreenLayout'
 import { FontAwesome } from '@react-native-vector-icons/fontawesome/static'
 import { useIntl } from 'react-intl'
-import { StatusBar } from 'react-native'
 import type { StackScreenProps } from '@react-navigation/stack'
 import type { MainStackParamList } from '../../navigation/MainStack'
 import PixelButton from '../../components/PixelButton'
@@ -11,14 +11,6 @@ import { useGameTypeRepository } from '../../repositories/gameTypeRepository'
 import { useGameRepository } from '../../repositories/gameRepository'
 import { gameTypes } from '../../models/GameType'
 import { theme } from '../../theme/theme'
-import {
-  BackgroundContainer,
-  BackgroundImage,
-  PaperBottom,
-  PaperTop,
-  Rivet,
-  SafeArea,
-} from '../MainScreen/MainScreen.styles'
 import {
   Content,
   OptionContent,
@@ -77,81 +69,68 @@ export default function SelectGameTypeScreen({
   }
 
   return (
-    <>
-      <BackgroundContainer>
-        <BackgroundImage
-          source={require('../../../assets/images/wood-texture.png')}
-          resizeMode="repeat"
-        />
-      </BackgroundContainer>
-      <StatusBar barStyle="light-content" />
-      <SafeArea>
-        <ScreenScroll>
-          <Content>
-            <Title $compact={compact} accessibilityRole="header">
-              {intl.formatMessage(messages.title)}
-            </Title>
-            <Panel>
-              <PaperTop />
-              <PaperBottom />
-              <Rivet $side="left" />
-              <Rivet $side="right" />
-              {Object.values(gameTypes).map(gameType => {
-                const selected = selectedType.id === gameType.id
-                const title = intl.formatMessage(messages[gameType.id])
-                const description = intl.formatMessage(
-                  messages[`${gameType.id}Description`],
-                )
+    <ScreenLayout>
+      <ScreenScroll>
+        <Content>
+          <Title $compact={compact} accessibilityRole="header">
+            {intl.formatMessage(messages.title)}
+          </Title>
+          <Panel>
+            {Object.values(gameTypes).map(gameType => {
+              const selected = selectedType.id === gameType.id
+              const title = intl.formatMessage(messages[gameType.id])
+              const description = intl.formatMessage(
+                messages[`${gameType.id}Description`],
+              )
 
-                return (
-                  <PixelButton
-                    key={gameType.id}
-                    variant={selected ? 'primary' : 'secondary'}
-                    accessibilityLabel={`${title}. ${description}`}
-                    accessibilityState={{ selected }}
-                    onPress={() =>
-                      setSelectedType({ id: gameType.id, title, description })
-                    }
-                  >
-                    <OptionContent>
-                      <OptionHeading>
-                        <OptionTitle $compact={compact}>{title}</OptionTitle>
-                        {selected && (
-                          <FontAwesome
-                            name="check"
-                            size={compact ? 26 : 32}
-                            color={theme.colors.text}
-                            accessible={false}
-                          />
-                        )}
-                      </OptionHeading>
-                      <OptionDescription $compact={compact}>
-                        {description}
-                      </OptionDescription>
-                    </OptionContent>
-                  </PixelButton>
-                )
+              return (
+                <PixelButton
+                  key={gameType.id}
+                  variant={selected ? 'primary' : 'secondary'}
+                  accessibilityLabel={`${title}. ${description}`}
+                  accessibilityState={{ selected }}
+                  onPress={() =>
+                    setSelectedType({ id: gameType.id, title, description })
+                  }
+                >
+                  <OptionContent>
+                    <OptionHeading>
+                      <OptionTitle $compact={compact}>{title}</OptionTitle>
+                      {selected && (
+                        <FontAwesome
+                          name="check"
+                          size={compact ? 26 : 32}
+                          color={theme.colors.text}
+                          accessible={false}
+                        />
+                      )}
+                    </OptionHeading>
+                    <OptionDescription $compact={compact}>
+                      {description}
+                    </OptionDescription>
+                  </OptionContent>
+                </PixelButton>
+              )
+            })}
+            <Summary $compact={compact}>
+              {intl.formatMessage(messages.summary, {
+                players: players.length,
+                rounds,
+                words: players.length * rounds,
               })}
-              <Summary $compact={compact}>
-                {intl.formatMessage(messages.summary, {
-                  players: players.length,
-                  rounds,
-                  words: players.length * rounds,
-                })}
-              </Summary>
-              <PixelButton
-                variant="primary"
-                accessibilityLabel={intl.formatMessage(messages.start)}
-                onPress={handleStart}
-              >
-                <StartLabel $compact={compact}>
-                  {intl.formatMessage(messages.start)}
-                </StartLabel>
-              </PixelButton>
-            </Panel>
-          </Content>
-        </ScreenScroll>
-      </SafeArea>
-    </>
+            </Summary>
+            <PixelButton
+              variant="primary"
+              accessibilityLabel={intl.formatMessage(messages.start)}
+              onPress={handleStart}
+            >
+              <StartLabel $compact={compact}>
+                {intl.formatMessage(messages.start)}
+              </StartLabel>
+            </PixelButton>
+          </Panel>
+        </Content>
+      </ScreenScroll>
+    </ScreenLayout>
   )
 }

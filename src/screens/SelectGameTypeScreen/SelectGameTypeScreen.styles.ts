@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { Menu } from '../MainScreen/MainScreen.styles'
+import PaperPanel from '../../components/PaperPanel'
 import {
   fonts,
   getTextVariantStyles,
@@ -30,7 +30,7 @@ export const Title = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   textShadow: '2px 4px 0px #28180e',
 }))
 
-export const Panel = styled(Menu)({
+export const Panel = styled(PaperPanel)({
   paddingHorizontal: 20,
   paddingBottom: 28,
   gap: 20,

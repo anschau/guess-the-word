@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { Menu } from '../MainScreen/MainScreen.styles'
+import PaperPanel from '../../components/PaperPanel'
 import {
   fonts,
   getTextVariantStyles,
@@ -24,7 +24,7 @@ export const Header = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   textShadow: '2px 3px 0px #28180e',
 }))
 export const Highlight = styled.Text({ color: '#ffc531' })
-export const Panel = styled(Menu)({
+export const Panel = styled(PaperPanel)({
   paddingHorizontal: 18,
   paddingTop: 34,
   paddingBottom: 20,
@@ -47,7 +47,7 @@ export const SecretWord = styled.Text<{ $compact: boolean }>(
   }),
 )
 export const ClueLabel = styled.Text<{ $compact: boolean }>(() => ({
-  ...getTextVariantStyles(TypographyVariant.BODY1)
+  ...getTextVariantStyles(TypographyVariant.BODY1),
 }))
 export const ClueTitle = styled.Text<{ $compact: boolean }>(() => ({
   ...getTextVariantStyles(TypographyVariant.H2),

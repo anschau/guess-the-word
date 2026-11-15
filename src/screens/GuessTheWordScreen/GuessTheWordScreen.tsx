@@ -1,7 +1,13 @@
+import {
+  ModalBackdrop,
+  DialogPanel,
+  DialogTitle,
+} from '../../components/Dialog.styles'
+import ScreenLayout from '../../components/ScreenLayout'
 import { useRef, useState } from 'react'
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
-import { Modal, ScrollView, StatusBar } from 'react-native'
+import { Modal, ScrollView } from 'react-native'
 import GameScoreHeader from '../../components/GameScoreHeader'
 import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
@@ -9,17 +15,6 @@ import type { MainStackParamList } from '../../navigation/MainStack'
 import { useGameRepository } from '../../repositories/gameRepository'
 import { useGameTypeRepository } from '../../repositories/gameTypeRepository'
 import { useWordRepository } from '../../repositories/wordRepository'
-import {
-  BackgroundContainer,
-  BackgroundImage,
-  SafeArea,
-  PaperTop,
-  PaperBottom,
-  Rivet,
-  ModalBackdrop,
-  DialogPanel,
-  DialogTitle,
-} from '../MainScreen/MainScreen.styles'
 import {
   Actions,
   Body,
@@ -130,14 +125,7 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
 
   return (
     <>
-      <BackgroundContainer>
-        <BackgroundImage
-          source={require('../../../assets/images/wood-texture.png')}
-          resizeMode="repeat"
-        />
-      </BackgroundContainer>
-      <StatusBar barStyle="light-content" />
-      <SafeArea>
+      <ScreenLayout>
         <ScreenScroll>
           <Content>
             <GameScoreHeader
@@ -156,10 +144,6 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
               </Header>
             </GameScoreHeader>
             <Panel>
-              <PaperTop />
-              <PaperBottom />
-              <Rivet $side="left" />
-              <Rivet $side="right" />
               {word && clue ? (
                 <>
                   <Section>
@@ -232,7 +216,7 @@ export default function GuessTheWordScreen({ route, navigation }: Props) {
             </Footer>
           </Content>
         </ScreenScroll>
-      </SafeArea>
+      </ScreenLayout>
       <Modal
         transparent
         visible={choosingWinner}

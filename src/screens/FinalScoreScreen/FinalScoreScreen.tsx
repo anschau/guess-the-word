@@ -1,7 +1,8 @@
+import ScreenLayout from '../../components/ScreenLayout'
 import { useRef, useState, type ComponentRef } from 'react'
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
-import { Alert, StatusBar, type View } from 'react-native'
+import { Alert, type View } from 'react-native'
 import Share from 'react-native-share'
 import { captureRef } from 'react-native-view-shot'
 import GameScore from '../../components/GameScore'
@@ -9,14 +10,6 @@ import PixelButton from '../../components/PixelButton'
 import { useCompact } from '../../config/config'
 import type { MainStackParamList } from '../../navigation/MainStack'
 import { useGameRepository } from '../../repositories/gameRepository'
-import {
-  BackgroundContainer,
-  BackgroundImage,
-  PaperBottom,
-  PaperTop,
-  Rivet,
-  SafeArea,
-} from '../MainScreen/MainScreen.styles'
 import {
   Actions,
   Body,
@@ -107,98 +100,85 @@ export default function FinalScoreScreen({ route, navigation }: Props) {
   }
 
   return (
-    <>
-      <BackgroundContainer>
-        <BackgroundImage
-          source={require('../../../assets/images/wood-texture.png')}
-          resizeMode="repeat"
-        />
-      </BackgroundContainer>
-      <StatusBar barStyle="light-content" />
-      <SafeArea>
-        <ScreenScroll>
-          <Content>
-            <Title $compact={compact} accessibilityRole="header">
-              {intl.formatMessage(messages.title)}
-            </Title>
-            <Panel>
-              <PaperTop />
-              <PaperBottom />
-              <Rivet $side="left" />
-              <Rivet $side="right" />
-              {players.length ? (
-                <ResultCard ref={resultRef} collapsable={false}>
-                  <Brand>{intl.formatMessage(messages.brand)}</Brand>
-                  <Celebration>
-                    <Trophy
-                      source={require('../../../assets/images/trophy.png')}
-                      $compact={compact}
-                      resizeMode="contain"
-                      accessible={false}
-                      onLoad={() => setImageReady(true)}
-                    />
-                    <Winner $compact={compact}>
-                      {tied
-                        ? intl.formatMessage(messages.tie)
-                        : intl.formatMessage(messages.winner, {
-                            playerName: players[0].name,
-                          })}
-                    </Winner>
-                    {!tied && (
-                      <Body $compact={compact}>
-                        {intl.formatMessage(messages.champion)}
-                        {'\n'}
-                        {intl.formatMessage(messages.translation)}
-                      </Body>
-                    )}
-                  </Celebration>
-                  <Divider />
-                  <GameScore
-                    players={players}
-                    title={intl.formatMessage(messages.ranking)}
+    <ScreenLayout>
+      <ScreenScroll>
+        <Content>
+          <Title $compact={compact} accessibilityRole="header">
+            {intl.formatMessage(messages.title)}
+          </Title>
+          <Panel>
+            {players.length ? (
+              <ResultCard ref={resultRef} collapsable={false}>
+                <Brand>{intl.formatMessage(messages.brand)}</Brand>
+                <Celebration>
+                  <Trophy
+                    source={require('../../../assets/images/trophy.png')}
+                    $compact={compact}
+                    resizeMode="contain"
+                    accessible={false}
+                    onLoad={() => setImageReady(true)}
                   />
-                </ResultCard>
-              ) : (
-                <Body $compact={compact}>
-                  {intl.formatMessage(messages.empty)}
-                </Body>
-              )}
-              <Actions>
-                {!!players.length && (
-                  <PixelButton variant="primary" onPress={playAgain}>
-                    <ButtonLabel $compact={compact} $primary>
-                      {intl.formatMessage(messages.playAgain)}
-                    </ButtonLabel>
-                  </PixelButton>
-                )}
-                {!!players.length && (
-                  <PixelButton
-                    testID="share-result"
-                    onPress={shareResult}
-                    disabled={sharing || !imageReady}
-                    accessibilityState={{ busy: sharing }}
-                  >
-                    <ButtonLabel $compact={compact}>
-                      {intl.formatMessage(
-                        sharing ? messages.sharing : messages.share,
-                      )}
-                    </ButtonLabel>
-                  </PixelButton>
-                )}
-                <PixelButton
-                  onPress={() =>
-                    navigation.reset({ index: 0, routes: [{ name: 'Main' }] })
-                  }
-                >
-                  <ButtonLabel $compact={compact}>
-                    {intl.formatMessage(messages.menu)}
+                  <Winner $compact={compact}>
+                    {tied
+                      ? intl.formatMessage(messages.tie)
+                      : intl.formatMessage(messages.winner, {
+                          playerName: players[0].name,
+                        })}
+                  </Winner>
+                  {!tied && (
+                    <Body $compact={compact}>
+                      {intl.formatMessage(messages.champion)}
+                      {'\n'}
+                      {intl.formatMessage(messages.translation)}
+                    </Body>
+                  )}
+                </Celebration>
+                <Divider />
+                <GameScore
+                  players={players}
+                  title={intl.formatMessage(messages.ranking)}
+                />
+              </ResultCard>
+            ) : (
+              <Body $compact={compact}>
+                {intl.formatMessage(messages.empty)}
+              </Body>
+            )}
+            <Actions>
+              {!!players.length && (
+                <PixelButton variant="primary" onPress={playAgain}>
+                  <ButtonLabel $compact={compact} $primary>
+                    {intl.formatMessage(messages.playAgain)}
                   </ButtonLabel>
                 </PixelButton>
-              </Actions>
-            </Panel>
-          </Content>
-        </ScreenScroll>
-      </SafeArea>
-    </>
+              )}
+              {!!players.length && (
+                <PixelButton
+                  testID="share-result"
+                  onPress={shareResult}
+                  disabled={sharing || !imageReady}
+                  accessibilityState={{ busy: sharing }}
+                >
+                  <ButtonLabel $compact={compact}>
+                    {intl.formatMessage(
+                      sharing ? messages.sharing : messages.share,
+                    )}
+                  </ButtonLabel>
+                </PixelButton>
+              )}
+              <PixelButton
+                onPress={() =>
+                  navigation.reset({ index: 0, routes: [{ name: 'Main' }] })
+                }
+              >
+                <ButtonLabel $compact={compact}>
+                  {intl.formatMessage(messages.menu)}
+                </ButtonLabel>
+              </PixelButton>
+            </Actions>
+          </Panel>
+        </Content>
+      </ScreenScroll>
+    </ScreenLayout>
   )
 }

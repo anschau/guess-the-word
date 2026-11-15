@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { Menu } from '../MainScreen/MainScreen.styles'
+import PaperPanel from '../../components/PaperPanel'
 import {
   fonts,
   getTextVariantStyles,
@@ -38,7 +38,7 @@ export const RoundValue = styled.Text<{ $compact: boolean }>(
   }),
 )
 
-export const Panel = styled(Menu)({
+export const Panel = styled(PaperPanel)({
   paddingHorizontal: 18,
   paddingTop: 44,
   paddingBottom: 28,

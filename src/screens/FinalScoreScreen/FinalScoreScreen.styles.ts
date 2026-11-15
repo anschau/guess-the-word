@@ -1,5 +1,5 @@
 import styled from 'styled-components/native'
-import { Menu } from '../MainScreen/MainScreen.styles'
+import PaperPanel from '../../components/PaperPanel'
 import { theme } from '../../theme/theme'
 import {
   fonts,
@@ -25,7 +25,7 @@ export const Title = styled.Text<{ $compact: boolean }>(({ $compact }) => ({
   textAlign: 'center',
   textShadow: '2px 3px 0px #28180e',
 }))
-export const Panel = styled(Menu)({
+export const Panel = styled(PaperPanel)({
   paddingHorizontal: 18,
   paddingTop: 36,
   paddingBottom: 24,

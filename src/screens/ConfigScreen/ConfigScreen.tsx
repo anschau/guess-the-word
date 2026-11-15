@@ -1,40 +1,29 @@
-import { FontAwesome } from '@react-native-vector-icons/fontawesome/static'
-import type { StackScreenProps } from '@react-navigation/stack'
-import { useIntl } from 'react-intl'
-import { Modal, ScrollView, StatusBar } from 'react-native'
-import PixelButton from '../../components/PixelButton'
-import { useCompact } from '../../config/config'
-import type { MainStackParamList } from '../../navigation/MainStack'
-import { theme } from '../../theme/theme'
-import { useSettingsRepository } from '../../repositories/settingsRepository'
 import {
-  BackgroundContainer,
-  BackgroundImage,
-  ButtonLabel,
-  DialogPanel,
-  DialogTitle,
-  DialogText,
-  ModalBackdrop,
-  PaperBottom,
-  PaperTop,
-  Rivet,
-  SafeArea,
-} from '../MainScreen/MainScreen.styles'
-import {
-  BackButton,
-  BackLabel,
-  ButtonContent,
   Content,
   Header,
   Panel,
   ScreenScroll,
   Title,
-  ModalActions,
-} from './ConfigScreen.styles'
+} from '../../components/FormScreen.styles'
+import {
+  DialogPanel,
+  DialogTitle,
+  DialogText,
+  ModalBackdrop,
+} from '../../components/Dialog.styles'
+import { ButtonLabel, ButtonContent } from '../../components/Common.styles'
+import BackButton from '../../components/BackButton'
+import ScreenLayout from '../../components/ScreenLayout'
+import type { StackScreenProps } from '@react-navigation/stack'
+import { useIntl } from 'react-intl'
+import { Modal, ScrollView } from 'react-native'
+import PixelButton from '../../components/PixelButton'
+import { useCompact } from '../../config/config'
+import type { MainStackParamList } from '../../navigation/MainStack'
+import { useSettingsRepository } from '../../repositories/settingsRepository'
+import { ModalActions } from './ConfigScreen.styles'
 import messages from './messages'
-
 type ConfigScreenProps = StackScreenProps<MainStackParamList, 'Config'>
-
 export default function ConfigScreen({ navigation }: ConfigScreenProps) {
   const intl = useIntl()
   const compact = useCompact()
@@ -42,44 +31,21 @@ export default function ConfigScreen({ navigation }: ConfigScreenProps) {
   const setRounds = useSettingsRepository(state => state.setRounds)
   const [roundsModalVisible, setRoundsModalVisible] = useState(false)
   const [draftRounds, setDraftRounds] = useState(rounds)
-
   return (
     <>
-      <BackgroundContainer>
-        <BackgroundImage
-          source={require('../../../assets/images/wood-texture.png')}
-          resizeMode="repeat"
-        />
-      </BackgroundContainer>
-      <StatusBar barStyle="light-content" />
-      <SafeArea>
+      <ScreenLayout>
         <ScreenScroll>
           <Content>
             <BackButton
-              variant="neutral"
-              accessibilityLabel={intl.formatMessage(messages.back)}
+              label={intl.formatMessage(messages.back)}
               onPress={() => navigation.goBack()}
-            >
-              <ButtonContent>
-                <FontAwesome
-                  name="arrow-left"
-                  size={20}
-                  color={theme.colors.text}
-                  accessible={false}
-                />
-                <BackLabel>{intl.formatMessage(messages.back)}</BackLabel>
-              </ButtonContent>
-            </BackButton>
+            />
             <Header>
               <Title $compact={compact} accessibilityRole="header">
                 {intl.formatMessage(messages.title)}
               </Title>
             </Header>
             <Panel>
-              <PaperTop />
-              <PaperBottom />
-              <Rivet $side="left" />
-              <Rivet $side="right" />
               <PixelButton
                 onPress={() =>
                   navigation.navigate('SelectPlayers', { mode: 'config' })
@@ -103,7 +69,7 @@ export default function ConfigScreen({ navigation }: ConfigScreenProps) {
             </Panel>
           </Content>
         </ScreenScroll>
-      </SafeArea>
+      </ScreenLayout>
       <Modal
         transparent
         animationType="fade"
