@@ -60,22 +60,43 @@ test('restores players, game type and progress from storage after memory is rese
   expect(usePlayersRepository.getState().setPlayers).toEqual(expect.any(Function))
 })
 
-test.each([
-  { version: 1, state: { difficulty: 'hard' } },
-  { version: 2, state: { gameType: 'hard' } },
-])('migrates version $version to a GameType object', async legacy => {
-  await appStorage.setItem(
-    'preferences',
-    JSON.stringify(legacy),
-  )
+describe.each([1, 2])('game type migration from version %i', version => {
+  test.each(Object.values(gameTypes))('restores $id', async gameType => {
+    await appStorage.setItem(
+      'preferences',
+      JSON.stringify({
+        version,
+        state: {
+          [version === 1 ? 'difficulty' : 'gameType']: gameType.id,
+        },
+      }),
+    )
 
-  await hydrateRepositories()
+    await hydrateRepositories()
 
-  expect(useGameTypeRepository.getState().gameType).toEqual(gameTypes.hard)
-  expect(JSON.parse((await appStorage.getItem('preferences'))!)).toEqual({
-    version: 3,
-    state: { gameType: gameTypes.hard },
+    expect(useGameTypeRepository.getState().gameType).toEqual(gameType)
+    expect(JSON.parse((await appStorage.getItem('preferences'))!)).toEqual({
+      version: 3,
+      state: { gameType },
+    })
   })
+
+  test.each(['unknown-mode', 'toString', null, 42, undefined])(
+    'defaults to easy for invalid ID %p',
+    async id => {
+      await appStorage.setItem(
+        'preferences',
+        JSON.stringify({
+          version,
+          state: { [version === 1 ? 'difficulty' : 'gameType']: id },
+        }),
+      )
+
+      await hydrateRepositories()
+
+      expect(useGameTypeRepository.getState().gameType).toEqual(gameTypes.easy)
+    },
+  )
 })
 
 test('keeps the last 20 results and retains the record after its game leaves history', async () => {
@@ -99,7 +120,10 @@ test('keeps the last 20 results and retains the record after its game leaves his
   expect(state.history[0].id).toBe('game-19')
   expect(state.history.some(item => item.id === 'record')).toBe(false)
   expect(state.history[0].finishedAt).toEqual(expect.any(String))
-  expect(state.bestScores).toEqual({ easy: 0, medium: 100, hard: 0 })
+  expect(state.bestScores).toEqual({
+    ...useGameRepository.getInitialState().bestScores,
+    medium: 100,
+  })
 })
 
 test('discarding a game does not add a result or record', async () => {
@@ -125,4 +149,44 @@ test('allows retrying a failed read without overwriting saved players', async ()
   expect(await appStorage.getItem('players')).toBe(savedPlayers)
   await hydrateRepositories()
   expect(usePlayersRepository.getState().players).toEqual(['Ana', 'Bruno'])
+})
+
+test.each(Object.values(gameTypes))(
+  'initializes and persists records for $id',
+  async ({ id }) => {
+    expect(useGameRepository.getState().bestScores[id]).toBe(0)
+    const { saveGame, finishGame } = useGameRepository.getState()
+    saveGame({ ...game('record', 25), difficulty: id })
+    finishGame()
+    saveGame({ ...game('lower-score', 10), difficulty: id })
+    finishGame()
+
+    const savedData = await appStorage.getItem('game')
+    resetMemory()
+    await appStorage.setItem('game', savedData!)
+    await hydrateRepositories()
+
+    expect(useGameRepository.getState().bestScores[id]).toBe(25)
+  },
+)
+
+test('fills missing game type records when restoring older saved data', async () => {
+  await appStorage.setItem(
+    'game',
+    JSON.stringify({
+      version: 1,
+      state: {
+        currentGame: game(),
+        history: [],
+        bestScores: { medium: 42 },
+      },
+    }),
+  )
+  await hydrateRepositories()
+
+  const state = useGameRepository.getState()
+  expect(state.currentGame).toEqual(game())
+  for (const { id } of Object.values(gameTypes)) {
+    expect(state.bestScores[id]).toBe(id === 'medium' ? 42 : 0)
+  }
 })

@@ -29,7 +29,10 @@ export const useGameTypeRepository = create<GameTypeRepository>()(
         } | null
         const id = version === 1 ? legacy?.difficulty : legacy?.gameType
         return {
-          gameType: { ...gameTypes[id === 'medium' || id === 'hard' ? id : 'easy'] },
+          gameType: {
+            ...(Object.values(gameTypes).find(gameType => gameType.id === id) ??
+              gameTypes.easy),
+          },
         }
       },
       skipHydration: true,

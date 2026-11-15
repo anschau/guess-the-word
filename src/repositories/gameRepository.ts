@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { createJSONStorage, persist } from 'zustand/middleware'
 import { appStorage } from '../storage/appStorage'
-import type { GameTypeId } from '../models/GameType'
+import { gameTypes, type GameTypeId } from '../models/GameType'
 
 export type SavedGame = {
   id: string
@@ -18,6 +18,10 @@ export type CompletedGame = SavedGame & { finishedAt: string }
 
 export const GAME_HISTORY_LIMIT = 20
 
+const initialBestScores = Object.fromEntries(
+  Object.values(gameTypes).map(({ id }) => [id, 0]),
+) as Record<GameTypeId, number>
+
 type GameRepository = {
   currentGame: SavedGame | null
   history: CompletedGame[]
@@ -32,7 +36,7 @@ export const useGameRepository = create<GameRepository>()(
     set => ({
       currentGame: null,
       history: [],
-      bestScores: { easy: 0, medium: 0, hard: 0 },
+      bestScores: { ...initialBestScores },
       saveGame: game =>
         set({
           currentGame: {
@@ -57,7 +61,7 @@ export const useGameRepository = create<GameRepository>()(
             bestScores: {
               ...state.bestScores,
               [game.difficulty]: Math.max(
-                state.bestScores[game.difficulty],
+                state.bestScores[game.difficulty] ?? 0,
                 ...game.players.map(player => player.score),
               ),
             },
@@ -73,6 +77,14 @@ export const useGameRepository = create<GameRepository>()(
         history: state.history,
         bestScores: state.bestScores,
       }),
+      merge: (persistedState, currentState) => {
+        const saved = persistedState as Partial<GameRepository> | undefined
+        return {
+          ...currentState,
+          ...saved,
+          bestScores: { ...initialBestScores, ...saved?.bestScores },
+        }
+      },
       skipHydration: true,
     },
   ),
