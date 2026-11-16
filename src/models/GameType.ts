@@ -1,4 +1,4 @@
-export type GameTypeId = 'easy' | 'medium' | 'hard' | 'Movie80s' | 'namesOfBrazilianRock'
+export type GameTypeId = 'easy' | 'medium' | 'hard' | 'Movie80s' | 'namesOfBrazilianRock' | 'BestGames' | 'ForDevelopers'
 
 export type GameType = {
   id: GameTypeId
@@ -31,5 +31,15 @@ export const gameTypes: Record<GameTypeId, GameType> = {
     id: 'namesOfBrazilianRock',
     title: 'Nomes do Rock Brasileiro',
     description: 'Os melhores...',
+  },
+  BestGames: {
+    id: 'BestGames',
+    title: 'Jogos',
+    description: 'Os melhores...',
+  },
+  ForDevelopers: {
+    id: 'ForDevelopers',
+    title: 'Para desenvolvedores',
+    description: 'if...else',
   },
 }
