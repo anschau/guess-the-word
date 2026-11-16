@@ -5,11 +5,11 @@ type MessageValues = {
   round: { round: number; totalRounds: number }
   turn: { playerName: string }
   player: { playerName: string }
+  confirm: { playerName: string }
 } & Record<
   | 'roundLabel'
   | 'passPhone'
   | 'instructions'
-  | 'confirm'
   | 'warning'
   | 'comingSoonTitle'
   | 'comingSoonText',
@@ -42,7 +42,7 @@ export default defineMessages<MessageValues>({
   },
   confirm: {
     id: `${screenId}.confirm`,
-    defaultMessage: 'Estou com o celular',
+    defaultMessage: 'Sou {playerName}, mostrar palavra',
   },
   warning: {
     id: `${screenId}.warning`,

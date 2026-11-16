@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import ScreenLayout from '../../components/ScreenLayout'
 import type { StackScreenProps } from '@react-navigation/stack'
 import { useIntl } from 'react-intl'
@@ -29,8 +30,15 @@ export default function SwitchTurnScreen({
   const intl = useIntl()
   const compact = useCompact()
   const { playerName, round, totalRounds } = route.params
+  const [canConfirm, setCanConfirm] = useState(false)
+
+  useEffect(() => {
+    const timeout = setTimeout(() => setCanConfirm(true), 2000)
+    return () => clearTimeout(timeout)
+  }, [])
 
   function handleConfirm() {
+    if (!canConfirm) return
     navigation.replace('GuessTheWord', route.params)
   }
 
@@ -65,11 +73,14 @@ export default function SwitchTurnScreen({
             </Instructions>
             <PixelButton
               variant="primary"
-              accessibilityLabel={intl.formatMessage(messages.confirm)}
+              accessibilityLabel={intl.formatMessage(messages.confirm, {
+                playerName,
+              })}
+              disabled={!canConfirm}
               onPress={handleConfirm}
             >
               <ConfirmLabel $compact={compact}>
-                {intl.formatMessage(messages.confirm)}
+                {intl.formatMessage(messages.confirm, { playerName })}
               </ConfirmLabel>
             </PixelButton>
           </Panel>

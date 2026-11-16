@@ -39,7 +39,7 @@ export const gameTypes: Record<GameTypeId, GameType> = {
   },
   ForDevelopers: {
     id: 'ForDevelopers',
-    title: 'Para desenvolvedores',
+    title: 'Para devs',
     description: 'if...else',
   },
 }

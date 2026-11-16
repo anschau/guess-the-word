@@ -16,6 +16,10 @@ type MessageValues = {
   | 'Movie80sDescription'
   | 'namesOfBrazilianRock'
   | 'namesOfBrazilianRockDescription'
+  | 'BestGames'
+  | 'BestGamesDescription'
+  | 'ForDevelopers'
+  | 'ForDevelopersDescription'
   | 'start'
   | 'comingSoonTitle'
   | 'comingSoonText',
@@ -53,6 +57,16 @@ export default defineMessages<MessageValues>({
   namesOfBrazilianRockDescription: {
     id: `${screenId}.namesOfBrazilianRockDescription`,
     defaultMessage: gameTypes.namesOfBrazilianRock.description,
+  },
+  BestGames: { id: `${screenId}.BestGames`, defaultMessage: gameTypes.BestGames.title },
+  BestGamesDescription: {
+    id: `${screenId}.BestGamesDescription`,
+    defaultMessage: gameTypes.BestGames.description,
+  },
+  ForDevelopers: { id: `${screenId}.ForDevelopers`, defaultMessage: gameTypes.ForDevelopers.title },
+  ForDevelopersDescription: {
+    id: `${screenId}.ForDevelopersDescription`,
+    defaultMessage: gameTypes.ForDevelopers.description,
   },
   summary: {
     id: `${screenId}.summary`,
