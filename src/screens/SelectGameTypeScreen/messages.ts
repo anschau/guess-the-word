@@ -7,19 +7,12 @@ type MessageValues = {
 } & Record<
   | 'title'
   | 'easy'
-  | 'easyDescription'
   | 'medium'
-  | 'mediumDescription'
   | 'hard'
-  | 'hardDescription'
   | 'Movie80s'
-  | 'Movie80sDescription'
   | 'namesOfBrazilianRock'
-  | 'namesOfBrazilianRockDescription'
   | 'BestGames'
-  | 'BestGamesDescription'
   | 'ForDevelopers'
-  | 'ForDevelopersDescription'
   | 'start'
   | 'comingSoonTitle'
   | 'comingSoonText',
@@ -34,40 +27,12 @@ export default defineMessages<MessageValues>({
     defaultMessage: 'Como vocês\nquerem jogar?',
   },
   easy: { id: `${screenId}.easy`, defaultMessage: gameTypes.easy.title },
-  easyDescription: {
-    id: `${screenId}.easyDescription`,
-    defaultMessage: gameTypes.easy.description,
-  },
   medium: { id: `${screenId}.medium`, defaultMessage: gameTypes.medium.title },
-  mediumDescription: {
-    id: `${screenId}.mediumDescription`,
-    defaultMessage: gameTypes.medium.description,
-  },
   hard: { id: `${screenId}.hard`, defaultMessage: gameTypes.hard.title },
-  hardDescription: {
-    id: `${screenId}.hardDescription`,
-    defaultMessage: gameTypes.hard.description,
-  },
   Movie80s: { id: `${screenId}.Movie80s`, defaultMessage: gameTypes.Movie80s.title },
-  Movie80sDescription: {
-    id: `${screenId}.Movie80sDescription`,
-    defaultMessage: gameTypes.Movie80s.description,
-  },
   namesOfBrazilianRock: { id: `${screenId}.namesOfBrazilianRock`, defaultMessage: gameTypes.namesOfBrazilianRock.title },
-  namesOfBrazilianRockDescription: {
-    id: `${screenId}.namesOfBrazilianRockDescription`,
-    defaultMessage: gameTypes.namesOfBrazilianRock.description,
-  },
   BestGames: { id: `${screenId}.BestGames`, defaultMessage: gameTypes.BestGames.title },
-  BestGamesDescription: {
-    id: `${screenId}.BestGamesDescription`,
-    defaultMessage: gameTypes.BestGames.description,
-  },
   ForDevelopers: { id: `${screenId}.ForDevelopers`, defaultMessage: gameTypes.ForDevelopers.title },
-  ForDevelopersDescription: {
-    id: `${screenId}.ForDevelopersDescription`,
-    defaultMessage: gameTypes.ForDevelopers.description,
-  },
   summary: {
     id: `${screenId}.summary`,
     defaultMessage:

@@ -9,6 +9,7 @@ import { usePlayersRepository } from '../../repositories/playersRepository'
 import { useSettingsRepository } from '../../repositories/settingsRepository'
 import { useGameTypeRepository } from '../../repositories/gameTypeRepository'
 import { useGameRepository } from '../../repositories/gameRepository'
+import { useWordRepository } from '../../repositories/wordRepository'
 import { gameTypes } from '../../models/GameType'
 import { theme } from '../../theme/theme'
 import {
@@ -39,6 +40,10 @@ export default function SelectGameTypeScreen({
   const rounds = useSettingsRepository(state => state.rounds)
   const selectedType = useGameTypeRepository(state => state.gameType)
   const setSelectedType = useGameTypeRepository(state => state.setGameType)
+  const currentGame = useGameRepository(state => state.currentGame)
+  const history = useGameRepository(state => state.history)
+  const words = useWordRepository(state => state.words)
+  const games = currentGame ? [...history, currentGame] : history
 
   function handleStart() {
     if (players.length < 2) {
@@ -79,18 +84,27 @@ export default function SelectGameTypeScreen({
             {Object.values(gameTypes).map(gameType => {
               const selected = selectedType.id === gameType.id
               const title = intl.formatMessage(messages[gameType.id])
-              const description = intl.formatMessage(
-                messages[`${gameType.id}Description`],
+              const categoryWords = words.filter(
+                word => word.gameTypeId === gameType.id,
               )
+              const usedWordIds = new Set(
+                games
+                  .filter(game => game.difficulty === gameType.id)
+                  .flatMap(game => game.usedWordIds),
+              )
+              const usedWords = categoryWords.filter(word =>
+                usedWordIds.has(String(word.id)),
+              ).length
+              const wordCount = `${usedWords}/${categoryWords.length}`
 
               return (
                 <PixelButton
                   key={gameType.id}
                   variant={selected ? 'primary' : 'secondary'}
-                  accessibilityLabel={`${title}. ${description}`}
+                  accessibilityLabel={`${title}. ${wordCount}`}
                   accessibilityState={{ selected }}
                   onPress={() =>
-                    setSelectedType({ id: gameType.id, title, description })
+                    setSelectedType({ id: gameType.id, title })
                   }
                 >
                   <OptionContent>
@@ -106,7 +120,7 @@ export default function SelectGameTypeScreen({
                       )}
                     </OptionHeading>
                     <OptionDescription $compact={compact}>
-                      {description}
+                      {wordCount}
                     </OptionDescription>
                   </OptionContent>
                 </PixelButton>
