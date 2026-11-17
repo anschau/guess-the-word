@@ -30,7 +30,7 @@ export default defineMessages({
   footer: {
     id: `${screenId}.footer`,
     defaultMessage:
-      'Um celular, amigos\nreunidos e inglês\nna ponta da língua.',
+      'Feito por um coração humano,\nauxiliado por IA,\nporque o tempo é curto.',
   },
   back: {
     id: `${screenId}.back`,
