@@ -32,8 +32,61 @@ local.properties
 *.hprof
 .cxx/
 *.keystore
-!debug.keystore
+# Only the project's development signing key may be versioned.
+!/android/app/debug.keystore
 .kotlin/
+
+# Environment secrets (templates must contain placeholders only)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+.envrc
+
+# Private keys, signing certificates and provisioning profiles
+*.jks
+*.pem
+*.key
+*.p8
+*.p12
+*.pfx
+*.mobileprovision
+*.provisionprofile
+id_rsa
+id_rsa.*
+id_ed25519
+id_ed25519.*
+
+# Local credentials and signing configuration
+.npmrc
+.netrc
+_netrc
+.pypirc
+.git-credentials
+.aws/
+.ssh/
+secrets/
+credentials/
+credentials.json
+service-account*.json
+service_account*.json
+*-firebase-adminsdk-*.json
+key.properties
+keystore.properties
+signing.properties
+gradle-local.properties
+
+# Local mobile service configuration
+google-services.json
+GoogleService-Info.plist
+
+# Fastlane authentication artifacts
+**/fastlane/.env*
+**/fastlane/AuthKey_*.p8
+
+# Logs can contain credentials and local environment details
+*.log
 
 # node.js
 #

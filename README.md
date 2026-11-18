@@ -32,6 +32,132 @@ cd ..
 npm run ios
 ```
 
+## Publicação Android
+
+Use **AAB** para enviar à Google Play Store e **APK** para instalar diretamente
+no celular. Os comandos abaixo usam PowerShell, na raiz do projeto, com os
+requisitos Android já instalados.
+
+### 1. Preparar versão e assinatura
+
+Em `android/app/build.gradle`, confira o `applicationId` (atualmente
+`com.guesstheword.anschau`) antes da primeira publicação: ele identifica o aplicativo na
+loja e deve permanecer igual nas atualizações. Aumente `versionCode` a cada envio
+à Play Store e ajuste `versionName` para a versão exibida ao usuário. A versão do `package.json` não altera esses campos.
+
+**A configuração atual assina o release com a chave de debug. Antes de distribuir,
+configure uma chave própria conforme os passos abaixo.**
+
+Gere a chave uma única vez, a partir da raiz do projeto (o `keytool` vem com o JDK):
+
+```powershell
+keytool -genkeypair -v -storetype PKCS12 -keystore android/app/guess-the-word-release.keystore -alias guess-the-word -keyalg RSA -keysize 2048 -validity 10000
+```
+
+Informe os dados e a senha solicitados. Guarde uma cópia segura da chave, do alias
+e da senha: eles serão necessários para assinar futuras versões do APK.
+O `.gitignore` já ignora `*.keystore`, exceto a chave de debug.
+
+Adicione estas propriedades ao arquivo **do usuário**
+`%USERPROFILE%\.gradle\gradle.properties` (no macOS/Linux,
+`~/.gradle/gradle.properties`), criando a pasta/arquivo se necessário.
+Substitua os valores de senha; não coloque credenciais no arquivo versionado
+`android/gradle.properties`.
+
+```properties
+GUESS_THE_WORD_STORE_FILE=guess-the-word-release.keystore
+GUESS_THE_WORD_KEY_ALIAS=guess-the-word
+GUESS_THE_WORD_STORE_PASSWORD=SUA_SENHA
+GUESS_THE_WORD_KEY_PASSWORD=SUA_SENHA
+```
+
+Para a chave PKCS12 gerada acima, use a mesma senha nos dois campos.
+Em `android/app/build.gradle`, acrescente este bloco dentro de `signingConfigs`,
+ao lado do bloco `debug` existente:
+
+```groovy
+release {
+    storeFile file(GUESS_THE_WORD_STORE_FILE)
+    storePassword GUESS_THE_WORD_STORE_PASSWORD
+    keyAlias GUESS_THE_WORD_KEY_ALIAS
+    keyPassword GUESS_THE_WORD_KEY_PASSWORD
+}
+```
+
+Após essa alteração, as propriedades e a chave precisam estar disponíveis em
+toda máquina que executar o Gradle, inclusive no CI.
+
+### 2. Gerar AAB e publicar na Play Store
+
+Com a assinatura configurada, execute:
+
+```powershell
+npm ci
+cd android
+.\gradlew :app:bundleRelease
+cd ..
+```
+
+Arquivo gerado: `android/app/build/outputs/bundle/release/app-release.aab`.
+O AAB é destinado à loja e não pode ser instalado diretamente pelo gerenciador
+de arquivos do celular.
+
+1. Acesse o [Google Play Console](https://play.google.com/console), com uma conta
+   de desenvolvedor, e crie o aplicativo (ou abra o já cadastrado).
+2. Complete a ficha da loja e as declarações solicitadas no painel, incluindo
+   imagens, classificação indicativa, segurança dos dados e política de privacidade.
+3. Configure o **Play App Signing** no primeiro envio. A chave local pode ser
+   usada como chave de upload; o Google assina os APKs entregues pela loja com a
+   chave de assinatura do aplicativo.
+4. Crie uma versão em **Teste interno**, envie o AAB, preencha as notas da versão
+   e disponibilize-a aos testadores. Instale pela loja e valide o funcionamento.
+5. Cumpra os requisitos de teste e de acesso à produção apresentados para sua
+   conta. Depois crie ou promova a versão para **Produção**, escolha os países e
+   envie para revisão/publicação.
+
+Em cada atualização, aumente o `versionCode`, gere outro AAB e crie uma nova
+versão. Consulte as exigências atuais de API de destino e as pendências no
+Console antes de enviar.
+
+### 3. Gerar APK para instalação manual
+
+Use a mesma preparação de assinatura e versão da etapa 1. Na raiz do projeto:
+
+```powershell
+npm ci
+cd android
+.\gradlew :app:assembleRelease
+cd ..
+```
+
+Arquivo gerado: `android/app/build/outputs/apk/release/app-release.apk`.
+O build de release inclui o JavaScript e os assets; não precisa do Metro nem de
+`npm start` para funcionar.
+
+- **Pelo celular:** transfira o APK, abra-o e, quando solicitado pelo Android,
+  permita a instalação de apps dessa origem (navegador ou gerenciador de arquivos).
+- **Por USB:** habilite a depuração USB, autorize o computador e execute, na raiz:
+
+  ```powershell
+  adb devices
+  adb install -r android/app/build/outputs/apk/release/app-release.apk
+  ```
+
+Para atualizar sem apagar os dados, mantenha o mesmo `applicationId` e a mesma
+assinatura e aumente o `versionCode`. Uma instalação de debug ou da Play Store
+pode ter outra assinatura; nesse caso, o Android recusará a atualização com esse
+APK. Desinstalar a versão anterior permite instalar a nova, mas **apaga os dados
+locais do jogo**. A chave de upload do Play não é necessariamente a chave que
+assina o app instalado pela loja; planeje essa diferença se distribuir pelos
+dois canais.
+
+Antes de compartilhar, teste o APK de release em um aparelho real, com o Metro
+desligado, incluindo abertura, navegação e persistência dos dados após reabrir.
+
+Referências oficiais: [assinatura e publicação no React Native](https://reactnative.dev/docs/signed-apk-android),
+[build pela linha de comando no Android](https://developer.android.com/build/building-cmdline)
+e [preparação e lançamento de versões no Play Console](https://support.google.com/googleplay/android-developer/answer/9859348).
+
 ## Fontes
 
 - Textos: [Motion Control Bold](https://www.1001fonts.com/motion-control-font.html).
