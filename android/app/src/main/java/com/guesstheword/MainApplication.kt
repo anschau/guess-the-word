@@ -1,4 +1,4 @@
-package com.guesstheword
+package com.guesstheword.anschau
 
 import android.app.Application
 import com.facebook.react.PackageList

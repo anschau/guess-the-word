@@ -77,13 +77,25 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.guesstheword"
+    namespace "com.guesstheword.anschau"
     defaultConfig {
-        applicationId "com.guesstheword"
+        applicationId "com.guesstheword.anschau"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
         versionName "1.0"
+        externalNativeBuild {
+            cmake {
+                // Hash long object paths before they exceed Ninja's Windows limit.
+                arguments "-DCMAKE_OBJECT_PATH_MAX=240"
+            }
+        }
+    }
+    externalNativeBuild {
+        cmake {
+            // Leave room for generated target and source file names on Windows.
+            buildStagingDirectory file("../../.cxx")
+        }
     }
     signingConfigs {
         debug {
@@ -91,6 +103,12 @@ android {
             storePassword 'android'
             keyAlias 'androiddebugkey'
             keyPassword 'android'
+        }
+        release {
+            storeFile file(GUESS_THE_WORD_STORE_FILE)
+            storePassword GUESS_THE_WORD_STORE_PASSWORD
+            keyAlias GUESS_THE_WORD_KEY_ALIAS
+            keyPassword GUESS_THE_WORD_KEY_PASSWORD
         }
     }
     buildTypes {
@@ -100,7 +118,7 @@ android {
         release {
             // Caution! In production, you need to generate your own keystore file.
             // see https://reactnative.dev/docs/signed-apk-android.
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
